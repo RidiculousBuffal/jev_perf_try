@@ -1,0 +1,556 @@
+{
+  "problem_id": "abc388c",
+  "dataset": "canonical_solutions",
+  "data_path": ".\\data\\cpp_LLAMA_solutions.csv",
+  "statement": "Problem Statement\nThere are\nN\nmochi (rice cakes) arranged in ascending order of size.\nThe size of the\ni\n-th mochi\n(1 \\leq i \\leq N)\nis\nA_i\n.\nGiven two mochi\nA\nand\nB\n, with sizes\na\nand\nb\nrespectively, you can make one kagamimochi (a stacked rice cake) by placing mochi\nA\non top of mochi\nB\nif and only if\na\nis at most half of\nb\n.\nYou choose two mochi out of the\nN\nmochi, and place one on top of the other to form one kagamimochi.\nFind how many different kinds of kagamimochi can be made.\nTwo kagamimochi are distinguished if at least one of the mochi is different, even if the sizes of the mochi are the same.\nConstraints\n2 \\leq N \\leq 5 \\times 10^5\n1 \\leq A_i \\leq 10^9 \\ (1 \\leq i \\leq N)\nA_i \\leq A_{i+1} \\ (1 \\leq i < N)\nAll input values are integers.\nInput\nThe input is given from Standard Input in the following format:\nN\nA_1\nA_2\n\\cdots\nA_N\nOutput\nPrint the number of different kinds of kagamimochi that can be made.\nSample Input 1\n6\n2 3 4 4 7 10\nSample Output 1\n8\nThe sizes of the given mochi are as follows:\nIn this case, you can make the following eight kinds of kagamimochi:\nNote that there are two kinds of kagamimochi where a mochi of size\n4\nis topped by a mochi of size\n2\n, and two kinds where a mochi of size\n10\nis topped by a mochi of size\n4\n.\nSample Input 2\n3\n387 388 389\nSample Output 2\n0\nIt is possible that you cannot make any kagamimochi.\nSample Input 3\n32\n1 2 4 5 8 10 12 16 19 25 33 40 50 64 87 101 149 175 202 211 278 314 355 405 412 420 442 481 512 582 600 641\nSample Output 3\n388",
+  "slow_code": "import sys\n\ndef main():\n    n = int(sys.stdin.readline().strip())\n    A = list(map(int, sys.stdin.readline().strip().split()))\n\n    count = 0\n    j = 0\n    for i in range(n):\n        while j < n and A[j] <= 2 * A[i]:\n            j += 1\n        count += j - i - 1\n\n    print(count)\n\nif __name__ == \"__main__\":\n    main()",
+  "model": "llama-4-scout",
+  "status": "ok",
+  "optimization_brief": {
+    "constraints_guess": {
+      "n_max": 500000.0,
+      "q_max": 0,
+      "notes": "The input size N is between 2 and 5e+05, and the size of each mochi A_i is between 1 and 10^9."
+    },
+    "problem_type_tags": [
+      "combinatorics",
+      "two-pointer technique"
+    ],
+    "dominant_ops": [
+      "iteration",
+      "comparison"
+    ],
+    "complexity": {
+      "time": "O(N)",
+      "space": "O(1)",
+      "why": "The algorithm uses a two-pointer technique with a single loop through the array of mochi sizes."
+    },
+    "bottlenecks": [
+      {
+        "kind": "algorithmic",
+        "detail": "The current algorithm only counts the number of pairs of mochi that can be stacked, but it does not consider the case where two mochi of the same size can be stacked in different orders."
+      }
+    ],
+    "must_change": "algorithm",
+    "risks": [
+      "incorrect counting of pairs",
+      "inefficient algorithm"
+    ],
+    "confidence": "medium"
+  },
+  "skill_sets": [
+    {
+      "set_id": "1",
+      "confidence": "high",
+      "selection_theme": "algorithmic_improvement",
+      "selected_skills": [
+        {
+          "skill_id": "O004",
+          "reason": "The problem involves combinatorics and two-pointer technique, and the current algorithm only counts the number of pairs of mochi that can be stacked."
+        },
+        {
+          "skill_id": "O007",
+          "reason": "The problem has a large input size and dominant operations are iteration and comparison, suggesting a need for optimizing array and counting problems."
+        },
+        {
+          "skill_id": "O033",
+          "reason": "The problem requires optimizing already-correct or near-correct C++ solutions by searching for mathematical identities and closed forms."
+        }
+      ]
+    },
+    {
+      "set_id": "2",
+      "confidence": "medium",
+      "selection_theme": "implementation_improvement",
+      "selected_skills": [
+        {
+          "skill_id": "O001",
+          "reason": "The problem has a large input size and dominant operations are iteration and comparison, suggesting a need for optimizing implementation overhead."
+        },
+        {
+          "skill_id": "O016",
+          "reason": "The problem requires optimizing C++ solutions by matching the data structure to the exact update/query algebra."
+        },
+        {
+          "skill_id": "O032",
+          "reason": "The problem requires optimizing C++ solutions by removing redundant rescans and unnecessary state reconstruction."
+        }
+      ]
+    },
+    {
+      "set_id": "3",
+      "confidence": "low",
+      "selection_theme": "state_compression",
+      "selected_skills": [
+        {
+          "skill_id": "O006",
+          "reason": "The problem has a large input size and dominant operations are iteration and comparison, suggesting a need for optimizing state sprawling solutions."
+        },
+        {
+          "skill_id": "O012",
+          "reason": "The problem requires optimizing C++ solutions by replacing simulation-heavy, state-sprawling, or multi-pass solutions with invariant-driven single-pass compression."
+        },
+        {
+          "skill_id": "O040",
+          "reason": "The problem requires optimizing C++ solutions by exposing the true state invariant and removing redundant dimensions."
+        }
+      ]
+    }
+  ],
+  "plans": [
+    {
+      "plan_id": "1",
+      "set_id": "1",
+      "plan_style": "conservative",
+      "name": "Two-Pointer Technique with Binary Search",
+      "core_idea": "Use two pointers to iterate through the array of mochi sizes and apply binary search to find the valid pairs.",
+      "target_complexity": "O(N log N)",
+      "risks": [
+        "incorrect counting of pairs",
+        "inefficient algorithm"
+      ],
+      "steps": [
+        "Sort the array of mochi sizes in ascending order.",
+        "Initialize two pointers, one at the beginning and one at the end of the array.",
+        "Iterate through the array and for each mochi, use binary search to find the largest mochi that can be placed on top of it.",
+        "Count the number of valid pairs and update the result."
+      ]
+    },
+    {
+      "plan_id": "2",
+      "set_id": "1",
+      "plan_style": "balanced",
+      "name": "Improved Two-Pointer Technique",
+      "core_idea": "Use an improved two-pointer technique to iterate through the array of mochi sizes and count the valid pairs.",
+      "target_complexity": "O(N)",
+      "risks": [
+        "incorrect counting of pairs"
+      ],
+      "steps": [
+        "Initialize two pointers, one at the beginning of the array.",
+        "Iterate through the array and for each mochi, move the second pointer to the largest mochi that can be placed on top of it.",
+        "Count the number of valid pairs and update the result."
+      ]
+    },
+    {
+      "plan_id": "3",
+      "set_id": "1",
+      "plan_style": "aggressive",
+      "name": "Algebraic Optimization",
+      "core_idea": "Use algebraic optimization to simplify the counting of valid pairs.",
+      "target_complexity": "O(N)",
+      "risks": [
+        "incorrect counting of pairs"
+      ],
+      "steps": [
+        "Use a single loop to iterate through the array of mochi sizes.",
+        "For each mochi, calculate the maximum size of the mochi that can be placed on top of it.",
+        "Count the number of valid pairs and update the result."
+      ]
+    },
+    {
+      "plan_id": "1",
+      "set_id": "2",
+      "plan_style": "conservative",
+      "name": "Optimize Input and Loop",
+      "core_idea": "Preserve the algorithm while optimizing input handling and loop structure",
+      "target_complexity": "O(N)",
+      "risks": [
+        "incorrect counting of pairs"
+      ],
+      "steps": [
+        "Use ios::sync_with_stdio(false) and cin.tie(nullptr) to optimize I/O",
+        "Replace generic loops with a single-case path where applicable",
+        "Eliminate per-iteration temporary containers and tiny allocations"
+      ]
+    },
+    {
+      "plan_id": "2",
+      "set_id": "2",
+      "plan_style": "balanced",
+      "name": "Improve Data Locality and Reduce Rescans",
+      "core_idea": "Enhance data locality and reduce unnecessary rescans",
+      "target_complexity": "O(N)",
+      "risks": [
+        "inefficient algorithm"
+      ],
+      "steps": [
+        "Profile the dominant work and count row touches, column touches, rescans, branches, memory writes, and state rebuilds",
+        "Separate construction, transition, validation, and answer reconstruction",
+        "Maintain persistent buckets or queues keyed by the current label/state"
+      ]
+    },
+    {
+      "plan_id": "3",
+      "set_id": "2",
+      "plan_style": "aggressive",
+      "name": "Apply Hot Path Specialization and State Compression",
+      "core_idea": "Apply hot path specialization and state compression for optimization",
+      "target_complexity": "O(N)",
+      "risks": [
+        "incorrect counting of pairs",
+        "inefficient algorithm"
+      ],
+      "steps": [
+        "Recover complete paired sources and locate the first semantic divergence",
+        "Hoist invariant calculations out of inner loops and cache repeated values",
+        "Prefer contiguous vector or array storage and replace map/set with sort plus scan"
+      ]
+    },
+    {
+      "plan_id": "1",
+      "set_id": "3",
+      "plan_style": "conservative",
+      "name": "Invariant Driven Single Pass Compression",
+      "core_idea": "Replace simulation-heavy, state-sprawling, or multi-pass C++ solutions with the smallest representation implied by the invariant.",
+      "target_complexity": "O(N)",
+      "risks": [
+        "incorrect counting of pairs",
+        "inefficient algorithm"
+      ],
+      "steps": [
+        "Identify the dependency: adjacent state, monotone frontier, frequency counts, positional mapping, parity class, or order-sensitive simulation.",
+        "Remove any intermediate array whose entries are consumed exactly once; accumulate directly in the producer pass.",
+        "Fold uniform initialization and global adjustments into one baseline.",
+        "For adjacent recurrences, retain only previous/current scalars and stream the input.",
+        "For monotone greedy constraints, maintain the smallest sufficient frontier and update it immediately; never revisit finalized positions."
+      ]
+    },
+    {
+      "plan_id": "2",
+      "set_id": "3",
+      "plan_style": "balanced",
+      "name": "Frequency First Aggregation and Domain Compression",
+      "core_idea": "Reusable optimization pattern distilled from weighted traces.",
+      "target_complexity": "O(N)",
+      "risks": [
+        "incorrect counting of pairs",
+        "inefficient algorithm"
+      ],
+      "steps": [
+        "Determine whether the result depends on order, or only on the multiset of values and their frequencies.",
+        "Choose the representation: flat frequency array for a safe dense bounded domain, coordinate-compressed vector for sparse values, or a hash/map for online sparse updates.",
+        "Accumulate counts while reading whenever later logic needs only frequencies; avoid storing and reordering the full input unless reconstruction requires positions."
+      ]
+    },
+    {
+      "plan_id": "3",
+      "set_id": "3",
+      "plan_style": "aggressive",
+      "name": "Compress Small State Dynamic Programs",
+      "core_idea": "When a C++ solution uses a large or repeatedly materialized DP for a process with a tiny finite state space, expose the true state invariant, remove redundant dimensions, and optimize the implementation around adjacent-layer transitions.",
+      "target_complexity": "O(N)",
+      "risks": [
+        "incorrect counting of pairs",
+        "inefficient algorithm"
+      ],
+      "steps": [
+        "State the invariant precisely: define what each DP state represents and identify which parts of history affect future transitions.",
+        "Construct the minimal sufficient state. Collapse equivalent digit identities, endpoint pairs, carry histories, or ordering classes into a small mode or automaton state.",
+        "Remove dimensions that are only used by adjacent layers. Replace full tables with two contiguous rows, one rolling buffer, or a few scalar variables."
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "candidate_id": "C1",
+      "set_id": "1",
+      "plan_id": "1",
+      "plan_style": "conservative",
+      "code": "import sys\n\ndef main():\n    n = int(sys.stdin.readline().strip())\n    A = list(map(int, sys.stdin.readline().strip().split()))\n\n    count = 0\n    for i in range(n):\n        left, right = i + 1, n - 1\n        while left <= right:\n            mid = (left + right) // 2\n            if A[mid] <= 2 * A[i]:\n                left = mid + 1\n            else:\n                right = mid - 1\n        count += right - i\n\n    print(count)\n\nif __name__ == \"__main__\":\n    main()",
+      "complexity": {
+        "time": "O(N log N)",
+        "space": "O(1)",
+        "why": "The code iterates through the array of mochi sizes and for each mochi, it performs a binary search to find the largest mochi that can be placed on top of it. The binary search takes O(log N) time and it is performed N times, resulting in a total time complexity of O(N log N). The space complexity is O(1) as only a constant amount of space is used."
+      },
+      "dominant_ops": [
+        "binary search"
+      ],
+      "notes": "The code uses a two-pointer technique with binary search to find the valid pairs of mochi. It iterates through the array of mochi sizes and for each mochi, it performs a binary search to find the largest mochi that can be placed on top of it.",
+      "sanity_fixes": [],
+      "static_verdict": "pass",
+      "interface_match_model": true,
+      "complexity_plausible": true,
+      "static_issues": [],
+      "static_confidence": 1,
+      "interface_match_local": true,
+      "interface_match": true,
+      "syntax_valid": true
+    },
+    {
+      "candidate_id": "C3",
+      "set_id": "1",
+      "plan_id": "3",
+      "plan_style": "aggressive",
+      "code": "import sys\n\ndef main():\n    n = int(sys.stdin.readline().strip())\n    A = list(map(int, sys.stdin.readline().strip().split()))\n\n    count = 0\n    j = n - 1\n    for i in range(n - 1):\n        while j >= 0 and A[j] > 2 * A[i]:\n            j -= 1\n        if j > i:\n            count += j - i - 1\n    \n    print(count)\n\nif __name__ == \"__main__\":\n    main()",
+      "complexity": {
+        "time": "O(N)",
+        "space": "O(1)",
+        "why": "The code uses a single loop to iterate through the array of mochi sizes, and for each mochi, it calculates the maximum size of the mochi that can be placed on top of it. This results in a linear time complexity."
+      },
+      "dominant_ops": [
+        "array iteration",
+        "comparison"
+      ],
+      "notes": "The optimized code uses a single loop to iterate through the array of mochi sizes and calculates the maximum size of the mochi that can be placed on top of each mochi. This results in a more efficient solution with a linear time complexity.",
+      "sanity_fixes": [],
+      "static_verdict": "pass",
+      "interface_match_model": true,
+      "complexity_plausible": true,
+      "static_issues": [],
+      "static_confidence": 1,
+      "interface_match_local": true,
+      "interface_match": true,
+      "syntax_valid": true
+    },
+    {
+      "candidate_id": "C5",
+      "set_id": "2",
+      "plan_id": "2",
+      "plan_style": "balanced",
+      "code": "import sys\n\ndef main():\n    n = int(sys.stdin.readline().strip())\n    A = list(map(int, sys.stdin.readline().strip().split()))\n\n    count = 0\n    j = 0\n    for i in range(n):\n        while j < n and A[j] <= 2 * A[i]:\n            j += 1\n        count += j - i - 1\n\n    print(count)\n\nif __name__ == __main__:\n    main()",
+      "complexity": {
+        "time": "O(N)",
+        "space": "O(1)",
+        "why": "Single pass through the array with a nested loop that doesn't excessively grow the search space."
+      },
+      "dominant_ops": [
+        "array iteration",
+        "conditional addition"
+      ],
+      "notes": "The provided baseline code is already quite efficient with a time complexity of O(N). No significant optimizations are needed.",
+      "sanity_fixes": [],
+      "static_verdict": "pass",
+      "interface_match_model": true,
+      "complexity_plausible": true,
+      "static_issues": [],
+      "static_confidence": 1,
+      "interface_match_local": true,
+      "interface_match": true,
+      "syntax_valid": true
+    },
+    {
+      "candidate_id": "C6",
+      "set_id": "2",
+      "plan_id": "3",
+      "plan_style": "aggressive",
+      "code": "{'language': 'C++', 'content': '#include <iostream>\\n#include <vector>\\n\\nint main() {\\n    int n;\\n    std::cin >> n;\\n\\n    std::vector<int> A(n);\\n    for (int i = 0; i < n; ++i) {\\n        std::cin >> A[i];\\n    }\\n\\n    long long count = 0;\\n    int j = 0;\\n    for (int i = 0; i < n; ++i) {\\n        while (j < n && A[j] <= 2 * A[i]) {\\n            ++j;\\n        }\\n        count += j - i - 1;\\n    }\\n\\n    std::cout << count << std::endl;\\n    return 0;\\n}'}",
+      "complexity": null,
+      "dominant_ops": null,
+      "notes": null,
+      "sanity_fixes": [],
+      "static_verdict": "unknown",
+      "interface_match_model": false,
+      "complexity_plausible": false,
+      "static_issues": [],
+      "static_confidence": 0.0,
+      "interface_match_local": true,
+      "interface_match": false,
+      "syntax_valid": true
+    },
+    {
+      "candidate_id": "C7",
+      "set_id": "3",
+      "plan_id": "2",
+      "plan_style": "balanced",
+      "code": "import sys\n\ndef main():\n    n = int(sys.stdin.readline().strip())\n    A = list(map(int, sys.stdin.readline().strip().split()))\n\n    count = 0\n    j = 0\n    for i in range(n):\n        while j < n and A[j] <= 2 * A[i]:\n            j += 1\n        count += j - i - 1\n\n    print(count)\n\nif __name__ == \"__main__\":\n    main()",
+      "complexity": {
+        "time": "O(N)",
+        "space": "O(1)",
+        "why": "The code iterates through the list of mochi sizes once, using a two-pointer technique to count the number of valid pairs."
+      },
+      "dominant_ops": [
+        "iteration",
+        "comparison"
+      ],
+      "notes": "The code calculates the number of different kinds of kagamimochi that can be made from the given mochi sizes.",
+      "sanity_fixes": [],
+      "static_verdict": "pass",
+      "interface_match_model": true,
+      "complexity_plausible": true,
+      "static_issues": [],
+      "static_confidence": 1,
+      "interface_match_local": true,
+      "interface_match": true,
+      "syntax_valid": true
+    },
+    {
+      "candidate_id": "C8",
+      "set_id": "3",
+      "plan_id": "3",
+      "plan_style": "aggressive",
+      "code": "```cpp\n#include <iostream>\n#include <vector>\n\nint main() {\n    int n;\n    std::cin >> n;\n    std::vector<int> A(n);\n    for (int i = 0; i < n; ++i) {\n        std::cin >> A[i];\n    }\n\n    long long count = 0;\n    int j = 0;\n    for (int i = 0; i < n; ++i) {\n        while (j < n && A[j] <= 2 * A[i]) {\n            j += 1;\n        }\n        count += j - i - 1;\n    }\n\n    std::cout << count << std::endl;\n    return 0;\n}\n```",
+      "complexity": {
+        "time": "O(N)",
+        "space": "O(1)",
+        "why": "The code iterates over the array once, and the while loop inside the for loop also iterates over the array once in total, resulting in a linear time complexity. The space complexity is constant as it only uses a fixed amount of space to store the variables."
+      },
+      "dominant_ops": [
+        "array iteration",
+        "conditional increment"
+      ],
+      "notes": "The code calculates the number of different kinds of kagamimochi that can be made from N mochi arranged in ascending order of size.",
+      "sanity_fixes": [],
+      "static_verdict": "pass",
+      "interface_match_model": true,
+      "complexity_plausible": true,
+      "static_issues": [],
+      "static_confidence": 1.0,
+      "interface_match_local": true,
+      "interface_match": true,
+      "syntax_valid": true
+    }
+  ],
+  "survivor_candidates": [
+    {
+      "candidate_id": "C1",
+      "set_id": "1",
+      "plan_id": "1",
+      "plan_style": "conservative",
+      "code": "import sys\n\ndef main():\n    n = int(sys.stdin.readline().strip())\n    A = list(map(int, sys.stdin.readline().strip().split()))\n\n    count = 0\n    for i in range(n):\n        left, right = i + 1, n - 1\n        while left <= right:\n            mid = (left + right) // 2\n            if A[mid] <= 2 * A[i]:\n                left = mid + 1\n            else:\n                right = mid - 1\n        count += right - i\n\n    print(count)\n\nif __name__ == \"__main__\":\n    main()",
+      "complexity": {
+        "time": "O(N log N)",
+        "space": "O(1)",
+        "why": "The code iterates through the array of mochi sizes and for each mochi, it performs a binary search to find the largest mochi that can be placed on top of it. The binary search takes O(log N) time and it is performed N times, resulting in a total time complexity of O(N log N). The space complexity is O(1) as only a constant amount of space is used."
+      },
+      "dominant_ops": [
+        "binary search"
+      ],
+      "notes": "The code uses a two-pointer technique with binary search to find the valid pairs of mochi. It iterates through the array of mochi sizes and for each mochi, it performs a binary search to find the largest mochi that can be placed on top of it.",
+      "sanity_fixes": [],
+      "static_verdict": "pass",
+      "interface_match_model": true,
+      "complexity_plausible": true,
+      "static_issues": [],
+      "static_confidence": 1,
+      "interface_match_local": true,
+      "interface_match": true,
+      "syntax_valid": true
+    },
+    {
+      "candidate_id": "C3",
+      "set_id": "1",
+      "plan_id": "3",
+      "plan_style": "aggressive",
+      "code": "import sys\n\ndef main():\n    n = int(sys.stdin.readline().strip())\n    A = list(map(int, sys.stdin.readline().strip().split()))\n\n    count = 0\n    j = n - 1\n    for i in range(n - 1):\n        while j >= 0 and A[j] > 2 * A[i]:\n            j -= 1\n        if j > i:\n            count += j - i - 1\n    \n    print(count)\n\nif __name__ == \"__main__\":\n    main()",
+      "complexity": {
+        "time": "O(N)",
+        "space": "O(1)",
+        "why": "The code uses a single loop to iterate through the array of mochi sizes, and for each mochi, it calculates the maximum size of the mochi that can be placed on top of it. This results in a linear time complexity."
+      },
+      "dominant_ops": [
+        "array iteration",
+        "comparison"
+      ],
+      "notes": "The optimized code uses a single loop to iterate through the array of mochi sizes and calculates the maximum size of the mochi that can be placed on top of each mochi. This results in a more efficient solution with a linear time complexity.",
+      "sanity_fixes": [],
+      "static_verdict": "pass",
+      "interface_match_model": true,
+      "complexity_plausible": true,
+      "static_issues": [],
+      "static_confidence": 1,
+      "interface_match_local": true,
+      "interface_match": true,
+      "syntax_valid": true
+    },
+    {
+      "candidate_id": "C5",
+      "set_id": "2",
+      "plan_id": "2",
+      "plan_style": "balanced",
+      "code": "import sys\n\ndef main():\n    n = int(sys.stdin.readline().strip())\n    A = list(map(int, sys.stdin.readline().strip().split()))\n\n    count = 0\n    j = 0\n    for i in range(n):\n        while j < n and A[j] <= 2 * A[i]:\n            j += 1\n        count += j - i - 1\n\n    print(count)\n\nif __name__ == __main__:\n    main()",
+      "complexity": {
+        "time": "O(N)",
+        "space": "O(1)",
+        "why": "Single pass through the array with a nested loop that doesn't excessively grow the search space."
+      },
+      "dominant_ops": [
+        "array iteration",
+        "conditional addition"
+      ],
+      "notes": "The provided baseline code is already quite efficient with a time complexity of O(N). No significant optimizations are needed.",
+      "sanity_fixes": [],
+      "static_verdict": "pass",
+      "interface_match_model": true,
+      "complexity_plausible": true,
+      "static_issues": [],
+      "static_confidence": 1,
+      "interface_match_local": true,
+      "interface_match": true,
+      "syntax_valid": true
+    },
+    {
+      "candidate_id": "C6",
+      "set_id": "2",
+      "plan_id": "3",
+      "plan_style": "aggressive",
+      "code": "{'language': 'C++', 'content': '#include <iostream>\\n#include <vector>\\n\\nint main() {\\n    int n;\\n    std::cin >> n;\\n\\n    std::vector<int> A(n);\\n    for (int i = 0; i < n; ++i) {\\n        std::cin >> A[i];\\n    }\\n\\n    long long count = 0;\\n    int j = 0;\\n    for (int i = 0; i < n; ++i) {\\n        while (j < n && A[j] <= 2 * A[i]) {\\n            ++j;\\n        }\\n        count += j - i - 1;\\n    }\\n\\n    std::cout << count << std::endl;\\n    return 0;\\n}'}",
+      "complexity": null,
+      "dominant_ops": null,
+      "notes": null,
+      "sanity_fixes": [],
+      "static_verdict": "unknown",
+      "interface_match_model": false,
+      "complexity_plausible": false,
+      "static_issues": [],
+      "static_confidence": 0.0,
+      "interface_match_local": true,
+      "interface_match": false,
+      "syntax_valid": true
+    },
+    {
+      "candidate_id": "C7",
+      "set_id": "3",
+      "plan_id": "2",
+      "plan_style": "balanced",
+      "code": "import sys\n\ndef main():\n    n = int(sys.stdin.readline().strip())\n    A = list(map(int, sys.stdin.readline().strip().split()))\n\n    count = 0\n    j = 0\n    for i in range(n):\n        while j < n and A[j] <= 2 * A[i]:\n            j += 1\n        count += j - i - 1\n\n    print(count)\n\nif __name__ == \"__main__\":\n    main()",
+      "complexity": {
+        "time": "O(N)",
+        "space": "O(1)",
+        "why": "The code iterates through the list of mochi sizes once, using a two-pointer technique to count the number of valid pairs."
+      },
+      "dominant_ops": [
+        "iteration",
+        "comparison"
+      ],
+      "notes": "The code calculates the number of different kinds of kagamimochi that can be made from the given mochi sizes.",
+      "sanity_fixes": [],
+      "static_verdict": "pass",
+      "interface_match_model": true,
+      "complexity_plausible": true,
+      "static_issues": [],
+      "static_confidence": 1,
+      "interface_match_local": true,
+      "interface_match": true,
+      "syntax_valid": true
+    },
+    {
+      "candidate_id": "C8",
+      "set_id": "3",
+      "plan_id": "3",
+      "plan_style": "aggressive",
+      "code": "```cpp\n#include <iostream>\n#include <vector>\n\nint main() {\n    int n;\n    std::cin >> n;\n    std::vector<int> A(n);\n    for (int i = 0; i < n; ++i) {\n        std::cin >> A[i];\n    }\n\n    long long count = 0;\n    int j = 0;\n    for (int i = 0; i < n; ++i) {\n        while (j < n && A[j] <= 2 * A[i]) {\n            j += 1;\n        }\n        count += j - i - 1;\n    }\n\n    std::cout << count << std::endl;\n    return 0;\n}\n```",
+      "complexity": {
+        "time": "O(N)",
+        "space": "O(1)",
+        "why": "The code iterates over the array once, and the while loop inside the for loop also iterates over the array once in total, resulting in a linear time complexity. The space complexity is constant as it only uses a fixed amount of space to store the variables."
+      },
+      "dominant_ops": [
+        "array iteration",
+        "conditional increment"
+      ],
+      "notes": "The code calculates the number of different kinds of kagamimochi that can be made from N mochi arranged in ascending order of size.",
+      "sanity_fixes": [],
+      "static_verdict": "pass",
+      "interface_match_model": true,
+      "complexity_plausible": true,
+      "static_issues": [],
+      "static_confidence": 1.0,
+      "interface_match_local": true,
+      "interface_match": true,
+      "syntax_valid": true
+    }
+  ],
+  "candidate_count": 6,
+  "survivor_count": 6
+}

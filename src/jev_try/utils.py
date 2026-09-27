@@ -1,5 +1,7 @@
-from typing import Literal, TypedDict
-
+import json
+from pathlib import Path
+from typing import Literal
+from typing_extensions import TypedDict
 from pydantic import BaseModel
 
 
@@ -89,3 +91,26 @@ def build_noul_question(instructions: str, criteria: NoulCriteria):
         'instructions': instructions,
         'criteria': criteria,
     })
+
+def extract_python_skills():
+    file = Path(__file__).resolve().parent.parent.parent / "data"/"python_skills"/"registry.json"
+    data = json.load(open(file,encoding='utf-8'))
+    return [x.get('name') for x in data if x.get('type')=='operator']
+
+def extract_cpp_skill():
+    file = Path(__file__).resolve().parent.parent.parent / "data" / "cpp_skills" / "registry.json"
+    data = json.load(open(file, encoding='utf-8'))
+    return [x.get('name') for x in data if x.get('type') == 'operator']
+
+def choose_question(file_name:str,problem_id:str):
+    file = Path(__file__).resolve().parent.parent.parent / "data"/"stage2"/file_name
+    with open(file,encoding='utf-8') as f:
+        for line in f:
+            if problem_id in line and r'"status": "ok"' in line:
+                return json.loads(line)
+    return None
+
+
+if __name__ == '__main__':
+    print(extract_cpp_skill())
+    print(choose_question('cpp_llama_runs.jsonl','abc388c'))
