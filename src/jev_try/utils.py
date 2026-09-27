@@ -5,8 +5,8 @@ from typing_extensions import TypedDict
 from pydantic import BaseModel
 
 
-class QuestionModel(BaseModel):
-    type:Literal['choice','score']
+class ScoreQuestionModel(BaseModel):
+    type:Literal['score']
     instructions:str
     criteria:list[str]
 
@@ -14,12 +14,17 @@ class  NoulCriteria(TypedDict):
     true:str
     false:str
 
+class ChoiceQuestionModel(BaseModel):
+    type: Literal['choice']
+    instructions: str
+    criteria: dict[str, str]
+
 class NoulQuestionModel(BaseModel):
     type:Literal['noul']
     instructions:str
     criteria:NoulCriteria
 
-def build_choice_question(instructions: str, criteria: list[str]):
+def build_choice_question(instructions: str, criteria: dict[str,str]):
     """
     Choice 是 TypeSafe 的一种 System One（系统一）问题类型，用于从一个预定义的选项集合中选出唯一一项。
 
@@ -41,7 +46,7 @@ def build_choice_question(instructions: str, criteria: list[str]):
         probabilities：每个选项的完整概率分布（总和为 1）
         confidence：0 到 1 之间的置信度，由概率分布的“扁平程度”计算而来——概率分散在多个选项上则置信度低，集中在单一选项上则置信度高
     """
-    return QuestionModel.model_validate({
+    return ChoiceQuestionModel.model_validate({
         'type': 'choice',
         'instructions': instructions,
         'criteria': criteria,
@@ -67,7 +72,7 @@ def build_score_question(instructions: str, criteria: list[str]):
         confidence：0~1，由概率分布的扁平程度决定（集中在单一级别则高，分散则低）
     """
 
-    return QuestionModel.model_validate({
+    return ScoreQuestionModel.model_validate({
         'type': 'score',
         "instructions": instructions,
         "criteria": criteria,
@@ -95,12 +100,20 @@ def build_noul_question(instructions: str, criteria: NoulCriteria):
 def extract_python_skills():
     file = Path(__file__).resolve().parent.parent.parent / "data"/"python_skills"/"registry.json"
     data = json.load(open(file,encoding='utf-8'))
-    return [x.get('name') for x in data if x.get('type')=='operator']
+    dic = {}
+    operator_skills =  [x for x in data if x.get('type')=='operator']
+    for x in operator_skills:
+        dic[x.get('name').replace(' ','_')] = x.get('description')
+    return dic
 
-def extract_cpp_skill():
+def extract_cpp_skills():
     file = Path(__file__).resolve().parent.parent.parent / "data" / "cpp_skills" / "registry.json"
     data = json.load(open(file, encoding='utf-8'))
-    return [x.get('name') for x in data if x.get('type') == 'operator']
+    operator_skills = [x for x in data if x.get('type') == 'operator']
+    dic = {}
+    for x in operator_skills:
+        dic[x.get('name').replace(' ', '_')] = x.get('description')
+    return dic
 
 def choose_question(file_name:str,problem_id:str):
     file = Path(__file__).resolve().parent.parent.parent / "data"/"stage2"/file_name
@@ -110,7 +123,28 @@ def choose_question(file_name:str,problem_id:str):
                 return json.loads(line)
     return None
 
+def skill_name_to_id(skill_name:str,mode:str):
+    if mode =='python':
+        file = Path(__file__).resolve().parent.parent.parent / "data" / "python_skills" / "registry.json"
+    if mode == 'cpp':
+        file = Path(__file__).resolve().parent.parent.parent / "data" / "cpp_skills" / "registry.json"
+    data = json.load(open(file, encoding='utf-8'))
+    for d in data:
+        if d.get('name')==skill_name:
+            return d.get('skill_id')
+
+
+def skill_id_to_name(skill_id: str, mode: str):
+    if mode == 'python':
+        file = Path(__file__).resolve().parent.parent.parent / "data" / "python_skills" / "registry.json"
+    if mode == 'cpp':
+        file = Path(__file__).resolve().parent.parent.parent / "data" / "cpp_skills" / "registry.json"
+    data = json.load(open(file, encoding='utf-8'))
+    for d in data:
+        if d.get('skill_id') == skill_id:
+            return d.get('name')
+
 
 if __name__ == '__main__':
-    print(extract_cpp_skill())
+    print(extract_cpp_skills())
     print(choose_question('cpp_llama_runs.jsonl','abc388c'))
