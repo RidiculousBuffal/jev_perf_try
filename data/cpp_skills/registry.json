@@ -1,0 +1,1290 @@
+[
+  {
+    "skill_id": "S1",
+    "type": "meta",
+    "language": "cpp",
+    "name": "Diagnose",
+    "description": "Convert structured performance and code-comparison traces into a prioritized optimization brief for competitive-programming solutions."
+  },
+  {
+    "skill_id": "S2",
+    "type": "meta",
+    "language": "cpp",
+    "name": "S2 Retrieve",
+    "description": "Select a dynamic, evidence-ranked budget of reusable operator skills from a registry for a broad competitive-programming optimization task."
+  },
+  {
+    "skill_id": "S3",
+    "type": "meta",
+    "language": "cpp",
+    "name": "S3: Strategize",
+    "description": "Compose selected problem-solving and optimization skills into multiple executable strategies, then choose and validate the safest strategy for a competitive-programming task."
+  },
+  {
+    "skill_id": "S4",
+    "type": "meta",
+    "language": "cpp",
+    "name": "S4 Judge",
+    "description": "Rank candidate solutions for broad competitive-programming optimization tasks by expected performance upside, correctness risk, and evidence strength."
+  },
+  {
+    "skill_id": "O001",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Hot Path Specialization and Constant Factor Cleanup",
+    "description": "Optimize already-correct C++ solutions whose asymptotic algorithm is appropriate but whose runtime or robustness is limited by implementation overhead. Preserve the algorithm and external behavior while simplifying control flow, specializing fixed-size work, removing unnecessary allocations and passes, tightening I/O, simplifying arithmetic, and selecting an appropriate floating-point type. Treat numeric stability",
+    "family": "constant_factor",
+    "tags": [
+      "constant-factor-optimization",
+      "implementation",
+      "fast-io",
+      "allocation-elimination",
+      "formula-simplification",
+      "branch-specialization",
+      "overflow-safety",
+      "floating-point-robustness",
+      "geometry",
+      "stream-processing"
+    ],
+    "triggers": [
+      "The paired implementations have identical asymptotic complexity and nearly identical core loops.",
+      "Runtime is dominated by formatted I/O, EOF probing, flushing, character classification, or mixed stdio and iostream usage.",
+      "A hot loop constructs tiny temporary vectors, nested vectors, or unused containers.",
+      "A fixed-size or single-case task is wrapped in a generic multi-case, worklist, or EOF loop.",
+      "A branch determines which inputs are needed, but the implementation eagerly parses all possible operands.",
+      "A multiplication, division, modulo, or floating-point conversion is used for a property derivable from operands, such as parity or ceiling division.",
+      "A linear aggregation stores all records even though the answer depends only on a few extrema or running statistics.",
+      "Intermediate arithmetic can overflow before promotion, especially products used only for parity, bounds, or formulas."
+    ]
+  },
+  {
+    "skill_id": "O002",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Normalize and Compress Dense Dynamic Programming",
+    "description": "Reusable optimization pattern distilled from weighted traces.",
+    "family": "dp",
+    "tags": [
+      "dynamic-programming",
+      "dp-normalization",
+      "rolling-array",
+      "state-compression",
+      "prefix-sums",
+      "running-sums",
+      "cache-locality",
+      "contiguous-storage",
+      "constant-factor-optimization",
+      "recurrence-correction"
+    ],
+    "triggers": [
+      "A DP table has dimensions or layers that are never simultaneously needed.",
+      "Each layer depends only on the previous layer, or a sequence recurrence depends only on the previous one or two states.",
+      "The hot loop repeatedly sums nearly the same predecessor range or updates the same destination through many separate passes.",
+      "A dense bounded state space is represented with maps, nested vectors, recursion, or fragmented containers.",
+      "Boundary checks, obstacle checks, or state-gating branches are repeated inside an otherwise regular interior loop.",
+      "The recurrence contains a source-data value confused with a DP value, or otherwise appears semantically inconsistent.",
+      "Memoization uses a value-based validity test such as `memo[x] > 0` even though zero or negative answers are valid.",
+      "A postprocessing step accumulates unused values, applies modular inverses, or normalizes a state that could directly represent the requested answer."
+    ]
+  },
+  {
+    "skill_id": "O003",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Linearize Graph Processing with Indexed State and Reusable Traversals",
+    "description": "A C++ optimization pattern for graph-heavy solutions that are already conceptually correct but waste time through repeated traversals, dense representations, recursion, unnecessary state, or late cycle handling. Preserve the mathematical invariant, then expose the graph structure explicitly: use sparse adjacency, compact integer-indexed state, iterative traversals, one-pass component or cycle processing, memoized",
+    "family": "graph",
+    "tags": [
+      "graph",
+      "dfs",
+      "bfs",
+      "functional-graph",
+      "cycle-detection",
+      "scc",
+      "topological-sort",
+      "difference-constraints",
+      "potential-assignment",
+      "lowlink"
+    ],
+    "triggers": [
+      "A loop repeatedly rescans all vertices or edges, especially while(true) around DFS or graph scans.",
+      "A loop over every vertex launches DFS, or every outgoing edge can trigger another traversal.",
+      "A functional graph has one successor per node and the query step count is large or 64-bit.",
+      "Cycle detection is present, but the solution still replays up to K transitions or rebuilds full cycle-index arrays.",
+      "A dense adjacency matrix is used even though edges are sparse or generated by a simple rule such as divisibility.",
+      "Recursive DFS may reach 1e5 or more frames, creating stack-overflow risk.",
+      "Graph state is stored in maps, sets, pair-heavy records, or oversized 64-bit arrays in a hot traversal.",
+      "A consistency checker computes extra extrema, counts, or summaries that do not affect the output."
+    ]
+  },
+  {
+    "skill_id": "O004",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Algebraic Specialization and Safe Hot Path Optimization",
+    "description": "A reusable C++ optimization skill for turning small, arithmetic-heavy, or aggregate-driven solutions into lean implementations. First inspect whether a loop is simulating a closed-form invariant, scanning a mostly empty domain, repeating equivalent work, or using unsafe numeric operations. Replace brute force with algebra, gcd, residue structure, divisor enumeration, or Euclidean reduction when justified. Otherwise",
+    "family": "combinatorics",
+    "tags": [
+      "c++",
+      "optimization",
+      "math",
+      "number-theory",
+      "integer-arithmetic",
+      "constant-factor",
+      "closed-form",
+      "gcd",
+      "modular-arithmetic",
+      "overflow-safety"
+    ],
+    "triggers": [
+      "A loop scans a huge numeric interval while testing a symmetric, divisibility, parity, or linear relation.",
+      "A fixed small search space is decoded through arrays, pow, floating-point conversions, or repeated division instead of direct cases or bit tests.",
+      "A simulation repeatedly adds a fixed value until a modulo condition holds, suggesting gcd or cycle-length reasoning.",
+      "A recursive quotient/remainder helper follows Euclidean-algorithm structure and always recurses through an exactly divisible terminal case.",
+      "A residue-frequency solution scans all K classes even though the predicate permits only one or a few relevant residues.",
+      "A binary search uses a monotone feasibility predicate whose body already computes richer residual or count information.",
+      "A bounded brute-force search derives complicated lower bounds whose arithmetic costs as much as the pruned work.",
+      "A product is multiplied before checking whether it fits a hard limit."
+    ]
+  },
+  {
+    "skill_id": "O005",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Choose the Right Shortest Path Engine and Engineer the Hot Path",
+    "description": "A reusable optimization skill for graph, grid, and implicit-state shortest-path code. First match the algorithm to edge semantics and query structure: use BFS for unit weights, 0-1 BFS only for weights exactly 0 and 1, Dijkstra for nonnegative weights, Bellman-Ford when negative edges or destination-relevant negative cycles are possible, and reversed single-source search when many queries share one target. Avoid",
+    "family": "graph",
+    "tags": [
+      "graph",
+      "shortest_path",
+      "bfs",
+      "0-1_bfs",
+      "dijkstra",
+      "bellman_ford",
+      "floyd_warshall",
+      "grid",
+      "implicit_graph",
+      "state_expansion"
+    ],
+    "triggers": [
+      "The implementation uses Dijkstra although transformed costs may be negative or unbounded improvement must be detected.",
+      "A deque-based shortest-path traversal is used with weights other than exactly 0 and 1, or 0-1 BFS is available but generic Dijkstra is used.",
+      "Floyd-Warshall computes every pair although the consumer reads only one target column or a small set of source/target distances.",
+      "A shortest-path routine is called repeatedly from many cells or nodes on the same static graph.",
+      "A priority queue contains duplicate states without a stale-entry check after pop.",
+      "A custom linked queue, per-node allocation, nested vectors, VLAs, or pair-heavy state storage appears in a large BFS/grid hot path.",
+      "A directional grid BFS rescans already reached corridors instead of stopping on a strictly better distance, equal-layer barrier, wall, or boundary.",
+      "A state-space search repeatedly scans all resources when only set bits of a mask remain relevant."
+    ]
+  },
+  {
+    "skill_id": "O006",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Invariant Driven Single Pass Compression",
+    "description": "Replace simulation-heavy, state-sprawling, or multi-pass C++ solutions with the smallest representation implied by the invariant. First identify whether the result depends only on adjacent state, aggregate counts, parity, positional mappings, or a monotone frontier. Then process input once when possible, fold uniform updates into a baseline, eliminate temporary arrays used only for reduction, and express local",
+    "family": "state_compression",
+    "tags": [
+      "optimization",
+      "greedy",
+      "single-pass",
+      "stream-processing",
+      "state-compression",
+      "invariant",
+      "array-scan",
+      "simulation-elimination",
+      "space-reduction",
+      "parity"
+    ],
+    "triggers": [
+      "A temporary array is written once and later reduced to one scalar.",
+      "A full-array update applies the same constant to every element.",
+      "The recurrence uses only the previous element, current element, or adjacent pair.",
+      "A fix at index i changes only i and i+1, but the implementation repeatedly revisits earlier indices.",
+      "A matching or pairing decision is non-overlapping and local, suggesting count-and-skip.",
+      "A boolean flag or first-element state is carried through a tight loop only for setup.",
+      "A large fixed buffer exists despite one-pass processing or per-test-case sizing being sufficient.",
+      "A DP dimension is queried only by parity or another small equivalence class."
+    ]
+  },
+  {
+    "skill_id": "O007",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Exploit Sorted Order Monotonicity Before Micro Optimizing",
+    "description": "A reusable C++ optimization skill for array, counting, greedy, selection, and offline-query problems: first identify whether the result depends only on sorted ranks, threshold states, extrema, or monotone reachability. Replace value-bounded tables, repeated scans, heaps, maps, per-index binary searches, and fragile custom parsers with contiguous arrays, sorting or selection, rank queries, prefix sums, two pointers",
+    "family": "dp",
+    "tags": [
+      "sorting",
+      "rank-queries",
+      "two-pointers",
+      "binary-search",
+      "binary-search-on-answer",
+      "selection",
+      "prefix-sums",
+      "offline-processing",
+      "greedy",
+      "counting"
+    ],
+    "triggers": [
+      "A dense table is indexed directly by raw values, especially with hard-coded coordinate bounds.",
+      "A full sort is followed by using only a prefix, suffix, median, rank, or aggregate rather than the complete order.",
+      "The same sorted-array binary search is performed once per index, while target positions move monotonically.",
+      "A repeated scan skips many candidates because traversal direction conflicts with the sorted order.",
+      "A triple or higher-dimensional enumeration only needs the top k or bottom k results.",
+      "A pair-counting predicate depends on signs, thresholds, or sorted products and is recomputed during answer binary search.",
+      "A heap, map, or lazy-deletion structure maintains extrema over a monotone range or stores more identity than the transition needs.",
+      "A binary-lifting table has far more levels than ceil(log2(n)) or uses a separate power table only for jump counts."
+    ]
+  },
+  {
+    "skill_id": "O008",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Collapse Tree and DAG Work into Linear Structural DP",
+    "description": "Recognize when a recursive, repeatedly recomputed, or over-generalized tree/DAG solution is solving a smaller structural problem. Replace it with direct adjacency traversal, explicit dependency order, bounded state, and linear-time aggregation. Typical reductions include two-sweep diameter computation, iterative BFS/DFS distance labeling, specialized two-pass rerooting, top-two neighbor aggregation, lowlink",
+    "family": "graph",
+    "tags": [
+      "C++",
+      "competitive-programming",
+      "tree",
+      "tree-dp",
+      "rerooting",
+      "diameter",
+      "graph",
+      "DAG",
+      "topological-sort",
+      "lowlink"
+    ],
+    "triggers": [
+      "A recursive traversal handles up to roughly 100000 or more vertices and can reach linear depth.",
+      "A tree solution uses a custom parent/child/sibling representation even though the input is naturally an undirected adjacency list.",
+      "A DFS computes an aggregate and then rescans the same children for a narrow correction predicate.",
+      "A rerooting pass sorts neighbor candidates but needs only the best and second-best values.",
+      "A global answer is actually a tree diameter, but the code only aggregates downward branches from one root.",
+      "Two-source logic reuses one distance array for distances, visitation, pruning, or destructive state.",
+      "Every candidate center performs a full traversal and then a full-array threshold scan, although only a bounded radius matters.",
+      "A subtree merge uses maps, multisets, vectors, or repeated small-to-large structures while the meaningful rank or level range is logarithmically bounded."
+    ]
+  },
+  {
+    "skill_id": "O009",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Goal Directed DP State Compression and Transition Optimization",
+    "description": "A reusable optimization pattern for C++ dynamic programs: first identify the exact information required by future transitions and the final query, then reformulate the state around that information instead of enumerating historical identities, redundant dimensions, or unreachable values. Typical reductions include replacing predecessor-index states with elapsed distance or accumulated score, converting reachability",
+    "family": "dp",
+    "tags": [
+      "dynamic_programming",
+      "state_compression",
+      "rolling_array",
+      "memoization",
+      "transition_optimization",
+      "bounded_knapsack",
+      "unbounded_knapsack",
+      "prefix_sums",
+      "reachability",
+      "game_dp"
+    ],
+    "triggers": [
+      "A DP state stores an index, split point, or last-action identity that affects the future only through distance, sum, count, wealth, or another derived quantity.",
+      "Each layer depends only on the immediately previous layer, but the implementation retains the full table or updates one layer in place.",
+      "A boolean reachable array duplicates information already represented by an INF or negative-infinity DP value.",
+      "The program computes every state although only one target state or a narrow reachable subgraph is queried.",
+      "Transitions scan all previous states except a small forbidden set, or repeatedly recompute the same aggregate.",
+      "A fixed global bound is known, but the implementation sizes work by a dynamically growing answer or repeatedly allocates tables.",
+      "A cleanup phase, repeated sorting, or reconstruction after selection suggests that the decision process can be encoded directly as transitions.",
+      "A recurrence contains a small fixed state dimension, such as player turn, carry, activity, or machine mode."
+    ]
+  },
+  {
+    "skill_id": "O010",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Specialize and Compress Range State Data Structures",
+    "description": "Optimize large C++ workloads by matching the data structure to the exact update/query algebra instead of using a general-purpose tree. Replace linear scans, per-element range edits, sqrt decomposition, redundant Fenwick/segment-tree combinations, or explicit range-to-graph expansion with compact flat-array structures. Use lazy propagation for composable range updates, direct monoid aggregation for online",
+    "family": "dp",
+    "tags": [
+      "segment-tree",
+      "lazy-propagation",
+      "range-update",
+      "range-query",
+      "range-min",
+      "range-max",
+      "point-update",
+      "point-query",
+      "offline-processing",
+      "sweep-line"
+    ],
+    "triggers": [
+      "A range operation scans elements or buckets directly, yielding O(length), O(sqrt(n)), or O(n) work per operation.",
+      "Many online range additions, assignments, minimum/maximum queries, or point updates share one index domain.",
+      "A lazy segment tree maintains fields that are never queried, such as subtree sums for a point-query-only workload.",
+      "A segment tree is built from an all-zero array even though only deferred tags are needed.",
+      "The implementation maintains both a Fenwick tree and a segment tree for overlapping responsibilities.",
+      "Node payloads store indices, raw values, or multiple minima when only one scalar aggregate or a small fixed tuple is consumed.",
+      "A root-only special update, duplicated query routine, or asymmetric propagation path exists.",
+      "All updates finish before answers are materialized, or every leaf is queried individually after the update phase."
+    ]
+  },
+  {
+    "skill_id": "O011",
+    "type": "operator",
+    "language": "cpp",
+    "name": "High Performance DSU for Static Connectivity and Component Aggregation",
+    "description": "Use a compact, rank/size-balanced Union-Find with path compression whenever operations consist of bulk undirected unions, connectivity checks, component sizes, or component-local aggregation. Build connectivity without expanding redundant cliques: union all members of each incidence bucket to one representative. After unions, compress roots once and replace global sorting or repeated graph searches with bucketed",
+    "family": "graph",
+    "tags": [
+      "disjoint-set-union",
+      "union-find",
+      "connected-components",
+      "graph-connectivity",
+      "offline-processing",
+      "component-counting",
+      "bucket-counting",
+      "incidence-graph",
+      "path-compression",
+      "union-by-size"
+    ],
+    "triggers": [
+      "A find routine walks parent links but does not assign the compressed root back to the parent array.",
+      "A DSU stores component sizes or ranks but does not use them to choose the surviving root.",
+      "A union operation calls Same or find and then recomputes the same roots for size updates or parent assignment.",
+      "An undirected edge is processed twice with unite(u, v) and unite(v, u).",
+      "Component size is queried through a function that performs another find after the caller already has the root.",
+      "Connectivity is built by generating every pair inside a shared-label bucket.",
+      "A static graph is searched separately for many connectivity queries after all edges are known.",
+      "A full sort of component-root tuples is used only to count equal keys."
+    ]
+  },
+  {
+    "skill_id": "O012",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Frequency First Aggregation and Domain Compression",
+    "description": "Reusable optimization pattern distilled from weighted traces.",
+    "family": "state_compression",
+    "tags": [
+      "frequency-counting",
+      "histogramming",
+      "sorting-elimination",
+      "sparse-compression",
+      "bounded-domain",
+      "top-k-maintenance",
+      "parity",
+      "greedy",
+      "monotone-queries",
+      "suffix-sums"
+    ],
+    "triggers": [
+      "The code sorts values only to group equal elements or recover frequencies.",
+      "A fixed-size frequency array exists, but the implementation still sorts the raw input or all zero-filled buckets.",
+      "The answer depends only on counts, duplicate parity, the largest few pair candidates, or a small number of frequency buckets.",
+      "A count array is scanned repeatedly to recover first, second, or top-k modes after updates.",
+      "A dense bucket-pair enumeration tests monotone threshold predicates such as a1 + a2 >= K and b1 + b2 >= L.",
+      "A sparse local-update problem materializes every affected state and sorts them before aggregation.",
+      "A boolean visited or reachability array is also being used to encode duplicates or invalidity.",
+      "A full auxiliary array or memset is used for state that can be derived online or represented by a compact list of active keys."
+    ]
+  },
+  {
+    "skill_id": "O013",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Compress Invariants and Specialize the Search",
+    "description": "Recognize when a seemingly general optimization problem has a much smaller sufficient state or candidate set. Replace explicit geometric regions, repeated validation, generic containers, and heuristic iteration with boundary extrema, canonical signatures, closed-form candidates, exact convex search, or pruned enumeration. Preserve the unavoidable search when necessary, but make each transition and leaf evaluation",
+    "family": "dp",
+    "tags": [
+      "computational-geometry",
+      "optimization",
+      "state-compression",
+      "candidate-reduction",
+      "branch-and-bound",
+      "convex-search",
+      "coordinate-compression",
+      "sorting",
+      "prefix-sums",
+      "canonicalization"
+    ],
+    "triggers": [
+      "The result depends only on cumulative extrema, such as the intersection of axis-aligned half-planes.",
+      "A brute-force loop scans a monotone variable with a piecewise-linear or separable objective.",
+      "A fixed small domain makes exhaustive candidate enumeration viable, but repeated formulas or validations dominate.",
+      "The objective is an L1 or Manhattan expression, suggesting medians or a small Cartesian product of median coordinates.",
+      "The objective is a minimax over distances or another convex function, while the current implementation uses cooling, farthest-point descent, or a magic iteration cap.",
+      "The search state is a subset, matching, or permutation and the leaf score repeatedly compares equivalent objects pairwise.",
+      "A relation such as parallelism, equality of slopes, or equal ratios is checked through repeated cross products instead of canonical keys.",
+      "A hot loop repeatedly calls sqrt, trigonometric functions, long-double geometry, or creates temporary point objects."
+    ]
+  },
+  {
+    "skill_id": "O014",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Offline Sweep and Structure Matched Range Processing",
+    "description": "Reusable optimization pattern distilled from weighted traces.",
+    "family": "dp",
+    "tags": [
+      "offline-processing",
+      "sweep-line",
+      "intervals",
+      "sorting",
+      "bucketing",
+      "coordinate-compression",
+      "fenwick-tree",
+      "segment-tree",
+      "range-update",
+      "point-query"
+    ],
+    "triggers": [
+      "The output is required for every index, divisor, time, coordinate, or threshold, but the implementation processes every interval or item independently.",
+      "A nested loop repeatedly revisits earlier intervals, candidate states, or query positions.",
+      "Intervals are activated according to length, endpoint, start time, or another bounded monotone key.",
+      "A segment tree supports only range add plus point query; a Fenwick tree over a difference array is sufficient.",
+      "A segment tree maintains only range add plus global maximum or minimum; the objective is a dynamic extremum over positions.",
+      "A static read-only range query is implemented with a segment tree even though the aggregate is additive and prefix-decomposable.",
+      "Boundary searches repeatedly ask for nearest smaller, larger, or equal values without updates.",
+      "Sorted interval lists are intersected with nested scans that restart from the beginning."
+    ]
+  },
+  {
+    "skill_id": "O015",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Replace Redundant Spatial Simulation with Aggregated Sweeps and Direct Construction",
+    "description": "Reusable optimization pattern distilled from weighted traces.",
+    "family": "streaming",
+    "tags": [
+      "optimization",
+      "grid",
+      "simulation",
+      "constructive",
+      "counting",
+      "precomputation",
+      "state-compression",
+      "coordinate-compression",
+      "sweep-line",
+      "periodicity"
+    ],
+    "triggers": [
+      "A candidate loop repeatedly rescans the same grid or array while changing only a small class, color, phase, or orientation assignment.",
+      "A temporary array or expanded sequence is built and consumed exactly once in order.",
+      "A 2D prefix or difference grid is used even though effects are periodic, separable, or change only at boundary events.",
+      "A 3D canvas is incremented for every cell inside every box after coordinate compression.",
+      "A recursive roll, cascade, deletion, or local compaction simulation is called once per operation and may traverse a long chain.",
+      "A fixed-capacity grid is cleared or copied in full although only a sparse or thin active region is relevant.",
+      "A hot loop repeatedly performs modulo, division, boundary checks, or mutually exclusive condition chains on predictable patterns.",
+      "A run is first measured and then revisited solely to write the same value into each element."
+    ]
+  },
+  {
+    "skill_id": "O016",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Profile First Hot Path Flattening",
+    "description": "Reusable optimization pattern distilled from weighted traces.",
+    "family": "constant_factor",
+    "tags": [
+      "competitive-programming",
+      "cpp-performance",
+      "hot-path-optimization",
+      "algorithmic-preprocessing",
+      "data-structure-selection",
+      "cache-locality",
+      "constant-factor-optimization",
+      "template-cleanup",
+      "modular-arithmetic",
+      "hashing"
+    ],
+    "triggers": [
+      "The slow and fast files are identical or truncated before solve(), main(), or the core loop.",
+      "A large generic header, macro, or utility template dominates the visible source.",
+      "Nested scans, repeated per-query recomputation, or repeated sorting may exist in the omitted body.",
+      "map, set, PBDS, or other node-based containers appear in high-frequency operations.",
+      "Hash-table lookup or insertion dominates profiling, especially with reallocation or long probe chains.",
+      "Repeated modular inverse, exponentiation, division, primality, or digit-processing helpers occur inside loops.",
+      "Circular-index macros repeatedly evaluate size() and modulo in tight loops.",
+      "Large integer state spaces may fit in compact arrays, masks, or compiler bit intrinsics."
+    ]
+  },
+  {
+    "skill_id": "O017",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Precompute Cumulative State and Sweep Monotonically",
+    "description": "Convert repeated range walks, branch-heavy local formulas, redundant feasibility scans, and overfull DP transitions into reusable cumulative representations. Build prefix, suffix, residue-class, path-distance, or transformed best-prefix/best-suffix tables; then answer each query or candidate split with O(1) arithmetic or a single monotone sweep. When a special cell or constrained subproblem is the only semantically",
+    "family": "dp",
+    "tags": [
+      "prefix-sums",
+      "suffix-sums",
+      "offline-preprocessing",
+      "monotone-sweep",
+      "two-pointers",
+      "binary-search",
+      "dynamic-programming",
+      "state-pruning",
+      "residue-class-decomposition",
+      "path-cost"
+    ],
+    "triggers": [
+      "A query repeatedly walks the same additive path, interval, chain, or modulo-D sequence.",
+      "A binary-search predicate contains a loop over a contiguous array segment.",
+      "Adjacent binary-search probes revisit heavily overlapping ranges.",
+      "A nested loop contains an index or pointer that only moves forward or backward.",
+      "A per-position formula has many cases but only changes a constant number of adjacent edges or segments.",
+      "The objective is evaluated over every split, pivot, or boundary using left and right aggregates.",
+      "A sorted prefix or suffix must repeatedly maintain the best, largest-n, or smallest-n subset sum.",
+      "A recurrence later becomes a prefix maximum, suffix maximum, or range-sum query."
+    ]
+  },
+  {
+    "skill_id": "O018",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Direct Graph Invariant and Residual Flow Reformulation",
+    "description": "Reusable optimization pattern distilled from weighted traces.",
+    "family": "graph",
+    "tags": [
+      "graph-reduction",
+      "max-flow",
+      "min-cut",
+      "Dinic",
+      "bipartite-matching",
+      "bipartite-coloring",
+      "parity",
+      "dfs",
+      "bfs",
+      "tree-dp"
+    ],
+    "triggers": [
+      "A solution builds a spanning forest with DSU and later traverses or checks deferred edges, although the final result only needs connectivity, parity, bipartiteness, or component counts.",
+      "A parity-DSU uses doubled vertices for a static graph whose only required property is one-time 2-coloring.",
+      "A recursive DFS, pointer-heavy adjacency structure, repeated full-array clearing, or fixed edge pool is used at input sizes near 1e5 or larger.",
+      "A matching routine repeatedly starts DFS augmentations from left vertices and rescans dense or already-failed adjacency.",
+      "Dependencies form a closure or partial order, such as choosing an item forcing choices on related items, and the objective is additive.",
+      "The objective is a weighted subset under implication or closure constraints, suggesting maximum closure and an s-t min-cut.",
+      "A solver tracks only intervals, global parity flags, or heuristic conflicts but must output concrete values satisfying exact edge relations.",
+      "Binary choices or endpoint selections create pairwise incompatibilities under a threshold, suggesting an implication graph checked inside binary search."
+    ]
+  },
+  {
+    "skill_id": "O019",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Hoisted Modular Combinatorics and Incremental Hot Loop Optimization",
+    "description": "When repeated modular combinations, inverses, powers, or equivalent arithmetic dominate a C++ solution, move invariant work out of hot loops and select the simplest matching formulation. Under a prime modulus, precompute factorials and inverse factorials once, answer binomial queries in O(1), and use iterative binary exponentiation only for the single required inverse seed or genuinely sparse queries. For sums",
+    "family": "combinatorics",
+    "tags": [
+      "combinatorics",
+      "factorial-precomputation",
+      "inverse-factorial",
+      "binomial-coefficients",
+      "modular-arithmetic",
+      "prime-modulus",
+      "incremental-recurrence",
+      "dynamic-programming",
+      "knapsack",
+      "grid-distance"
+    ],
+    "triggers": [
+      "A loop calls modular exponentiation with exponent MOD-2 once per index, query, factorial, or DFS transition.",
+      "A fixed prime modulus and many binomial or factorial-based queries are present.",
+      "The same factorial products, inverse products, or combination coefficients are rebuilt inside a loop.",
+      "Adjacent summation terms differ by an exponent of exactly one, a sign flip, or a simple coefficient ratio.",
+      "Alternating signs are implemented as pow(-1, k) instead of parity or a sign toggle.",
+      "A recurrence array is consumed in order and each state depends only on the previous state.",
+      "A combinatorial DP groups equal values even though direct per-item 1D knapsack fits the bounds.",
+      "A bounded value domain is handled with map/set lookup instead of a flat direct-address table."
+    ]
+  },
+  {
+    "skill_id": "O020",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Constraint Aligned Representation and Memory Safe C++ Optimization",
+    "description": "Preserve the proven algorithm while making its numeric model, storage layout, and hot-path representation match the real constraints. Eliminate undefined behavior, widen only overflow-prone arithmetic, narrow bounded state and container fields, use contiguous correctly sized storage, and replace brittle fixed-width tricks with transparent formulas when the input domain is wider. This skill commonly restores",
+    "family": "coprimality",
+    "tags": [
+      "implementation",
+      "correctness",
+      "undefined-behavior",
+      "integer-width",
+      "overflow",
+      "memory-layout",
+      "cache-locality",
+      "constant-factor",
+      "dynamic-programming",
+      "bit-counting"
+    ],
+    "triggers": [
+      "A solution uses #define int long long throughout the program.",
+      "Products, cumulative sums, LCMs, combinatorial counts, distances, or DP accumulators may exceed 32-bit range.",
+      "The stored type is narrower than the input domain, or multiplication occurs before promotion.",
+      "reserve() is followed by operator[] writes without resize() or push_back().",
+      "A variable-length array or large local array is used for input-sized storage.",
+      "Array dimensions, branch bounds, loop limits, or bitmask ranges disagree.",
+      "A fixed bit width such as 20 is used although inputs are 64-bit or a paired implementation processes about 60 bits.",
+      "Bit-packing constants encode a narrow lane width or other assumptions that do not cover the full domain."
+    ]
+  },
+  {
+    "skill_id": "O021",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Specialize Graph Workloads and Flatten Hot Path State",
+    "description": "Optimize C++ graph code by first matching the algorithm to the exact predicate, then using the lightest representation that preserves required behavior. Replace general shortest-path or bounded-search machinery when the task is only a fixed-hop existence, neighborhood intersection, degree, parity, or streaming edge predicate. For genuinely general traversal, use one-pass BFS/DFS with persistent progress, explicit",
+    "family": "graph",
+    "tags": [
+      "graph",
+      "bfs",
+      "dfs",
+      "shortest-path",
+      "reachability",
+      "two-hop-detection",
+      "adjacency-list",
+      "set-intersection",
+      "coordinate-compression",
+      "data-oriented-design"
+    ],
+    "triggers": [
+      "Dijkstra is used although all edge weights are equal and only reachability or a small distance threshold is required.",
+      "Acceptance depends only on a fixed-hop witness, such as a common neighbor of two terminals.",
+      "Edges can be processed independently and the result is a count, parity, degree predicate, or endpoint-local condition.",
+      "A helper repeatedly scans an adjacency list from its head for the same vertex.",
+      "A search uses visited-only state but lacks dist[], best-label, or dominance checks.",
+      "A separate visited array duplicates information already encoded by parent, distance, or answer sentinels.",
+      "Maps, sets, coordinate pairs, or dynamic neighbor discovery occur in a fixed-degree graph hot path.",
+      "A sparse adjacency list is accompanied by dense V×V auxiliary state."
+    ]
+  },
+  {
+    "skill_id": "O022",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Compress String State into Linear Invariants",
+    "description": "When a C++ solution repeatedly mutates strings, rescans prefixes, builds temporary buffers, or explores equivalent local decisions, derive the smallest sufficient state instead. Use counters for cancellation and run-counting problems, endpoint classes for concatenation effects, direct two-pointer checks for symmetric predicates, and closed-form parity or boundary invariants for reducible simulations. If the",
+    "family": "dp",
+    "tags": [
+      "C++",
+      "competitive-programming",
+      "strings",
+      "greedy",
+      "state-compression",
+      "invariant",
+      "linear-scan",
+      "dynamic-programming",
+      "reconstruction",
+      "simulation"
+    ],
+    "triggers": [
+      "A loop repeatedly deletes, erases, compacts, or rebuilds a string.",
+      "The same prefix or suffix is rescanned after each operation.",
+      "A stack or vector stores only unmatched occurrences whose exact identities are irrelevant.",
+      "A temporary array or transformed string is created although only its length, count, or endpoints are used.",
+      "The answer depends only on run boundaries, endpoint characters, character counts, or parity.",
+      "A concatenation objective creates effects only across adjacent string boundaries.",
+      "A full reverse, remap, copy, and compare is used for a symmetric predicate.",
+      "A supposedly local wildcard replacement affects future score or feasibility."
+    ]
+  },
+  {
+    "skill_id": "O023",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Bounded Range Number Theory Precomputation and Factor Structure Reduction",
+    "description": "When many operations involve primes, divisors, factorization, coprimality, or multiplicative functions over a known bounded value domain, replace repeated trial division, primality checks, divisor enumeration, and generic state scans with one-time dense preprocessing and direct mathematical aggregation. Use an Eratosthenes or linear sieve for primality and prime lists, an SPF table for repeated factorization",
+    "family": "coprimality",
+    "tags": [
+      "number-theory",
+      "prime-factorization",
+      "sieve",
+      "linear-sieve",
+      "smallest-prime-factor",
+      "precomputation",
+      "prefix-sum",
+      "divisor-counting",
+      "gcd",
+      "bounded-domain"
+    ],
+    "triggers": [
+      "The maximum input value is known or can be collected offline and a dense array fits memory.",
+      "A hot loop repeatedly calls primality, divisor, factorization, or gcd-related helpers.",
+      "The code performs many modulo or division operations against a fixed prime table.",
+      "A hardcoded prime list near the square root of the value bound suggests repeated trial division.",
+      "Many values must be factorized under one shared maximum.",
+      "A direct-addressed boolean, byte, integer, SPF, frequency, or prefix array is feasible.",
+      "Queries ask range counts for a predicate depending only on the queried value.",
+      "The input is processed across multiple test cases or until EOF, allowing preprocessing reuse."
+    ]
+  },
+  {
+    "skill_id": "O024",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Replace Generic Containers with Dense Counting and Online Aggregation",
+    "description": "When a solution uses std::map, std::set, repeated scans, or unnecessarily general DP for bounded integer keys, small alphabets, fixed-size inputs, or frequency-only workloads, specialize the representation and computation. Prefer flat arrays, vectors, compact fixed-size logic, unordered_map when keys are genuinely sparse, and sorted batching when order is needed. Accumulate pair contributions and other reusable",
+    "family": "combinatorics",
+    "tags": [
+      "frequency-counting",
+      "direct-indexing",
+      "dense-array",
+      "unordered-map",
+      "online-aggregation",
+      "duplicate-grouping",
+      "pair-counting",
+      "prefix-sum",
+      "sliding-window",
+      "dp-compression"
+    ],
+    "triggers": [
+      "A std::map or std::set is used only for frequency counting or exact-key lookup.",
+      "Integer keys lie in a known dense range such as [0, U].",
+      "A tiny fixed input or alphabet is handled with a generic ordered container.",
+      "Repeated map operator[] calls occur in a hot loop.",
+      "A second pass exists only to count a value class, compute a maximum, or derive pair contributions.",
+      "The answer can be updated from the previous frequency before incrementing it.",
+      "Many duplicate records share a sortable key, but only grouped totals affect the result.",
+      "A rolling-window frequency map counts equal transformed prefix states."
+    ]
+  },
+  {
+    "skill_id": "O025",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Compress Repeated Search into Aggregate DP or Bitmask States",
+    "description": "When brute force repeatedly constructs equivalent structures, rescans the same input, or recomputes transition data, identify the smallest state that preserves future feasibility and contribution. Replace explicit enumeration with memoized or iterative dynamic programming over aggregate counts, bounded sums, subset masks, component counts, or parity masks. Precompute reusable combinatorial, compatibility, distance",
+    "family": "state_compression",
+    "tags": [
+      "dynamic-programming",
+      "state-compression",
+      "combinatorics",
+      "bitmask-dp",
+      "subset-enumeration",
+      "memoization",
+      "precomputation",
+      "counting",
+      "mod-arithmetic",
+      "small-n-exponential"
+    ],
+    "triggers": [
+      "DFS stores indices or a construction sequence and rescans it only at leaves or in a separate checker.",
+      "A recursive search calls a full validation or scoring pass at every node.",
+      "Equivalent paths differ only by counts, multiplicities, processed levels, used sum, parity, or component count.",
+      "A recurrence enumerates every split or submask while recomputing the same aggregate transition data.",
+      "A helper such as a binomial, probability, distance, or compatibility calculation runs inside a hot nested loop.",
+      "A temporary counter or accumulator array is cleared and rebuilt for every mask or state.",
+      "The input has a tiny fixed domain, such as a small alphabet, a few counters, a short bit width, or a bounded circular state.",
+      "A subset DP uses dense per-vertex or per-item tables although the underlying graph or relation is sparse."
+    ]
+  },
+  {
+    "skill_id": "O026",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Exploit Interval Structure with Prefix, Difference, and Sweep Aggregation",
+    "description": "When a solution repeatedly scans overlapping ranges, expands intervals point by point, or models ordered interval constraints as a generic graph, replace the redundant representation with an aggregate structure. Identify whether each transition is a contiguous range update/query, interval coverage event, active interval minimum, interval intersection, or fixed-width reachability condition. Then use prefix sums",
+    "family": "dp",
+    "tags": [
+      "intervals",
+      "prefix-sums",
+      "difference-array",
+      "imos",
+      "range-query",
+      "range-update",
+      "sweep-line",
+      "interval-dp",
+      "dynamic-programming",
+      "offline-processing"
+    ],
+    "triggers": [
+      "An inner loop walks every point of an interval or repeatedly recounts the same covered coordinates.",
+      "Adjacent DP states query highly overlapping contiguous predecessor ranges.",
+      "A recurrence contains sums over a contiguous range of previous states.",
+      "A timeline or coordinate axis is bounded and the answer needs only aggregate active coverage.",
+      "Multiple events activate overlapping future spans, but the code tracks only one countdown, reset state, or current end.",
+      "Input relations are intervals, mirror pairs, or ordered constraints rather than arbitrary graph edges.",
+      "A graph contains systematic chain edges and interval transitions, suggesting monotone left-to-right propagation.",
+      "The answer is a scalar aggregate and does not require reconstructing an explicit visitation order."
+    ]
+  },
+  {
+    "skill_id": "O027",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Specialize Static and Offline Tree State",
+    "description": "Replace repeated traversal, overgeneralized dynamic-tree structures, and scan-based discovery with the smallest data structure that matches the actual invariant. Preprocess static topology once, index derived keys or event times, and answer queries through binary lifting, Euler/RMQ, segment trees, DSU contraction, merge trees, or bit-parallel representations as appropriate. Preserve semantics while removing",
+    "family": "graph",
+    "tags": [
+      "tree",
+      "graph",
+      "offline-queries",
+      "ancestor-query",
+      "lca",
+      "binary-lifting",
+      "euler-tour",
+      "segment-tree",
+      "rmq",
+      "union-find"
+    ],
+    "triggers": [
+      "A DFS invokes other DFS/counting routines inside its edge loop or repeatedly rescans overlapping subtrees.",
+      "A parent or ancestor find operation follows raw parent pointers inside a large query loop without compression or indexing.",
+      "The result depends on both a node and operation time, so a single DSU representative is not stable across queries.",
+      "The topology is static and queries only ask LCA, ancestry, path state, or threshold connectivity, but the implementation uses link-cut trees, splay trees, lazy path structures, or other dynamic machinery.",
+      "Heavy-light decomposition repeatedly materializes path fragments, allocates vectors, or invokes std::function callbacks in hot paths.",
+      "A sorted array is searched linearly for a deterministically derived key, especially with duplicate values and n near 1e5.",
+      "The same aggregate metadata is preserved across two implementations while only the balanced-tree mechanism changes.",
+      "Dense boolean or relation tables dominate memory and scalar row scans; n is small enough for bit-parallel O(n^2 / word_bits) processing."
+    ]
+  },
+  {
+    "skill_id": "O028",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Expose Algebraic Structure, Precompute Reuse, and Transform Hot Convolutions",
+    "description": "A reusable optimization pattern for C++ solutions whose slow path repeatedly recomputes algebraically identical values, scatters DP transitions, or simulates structured power sequences one step at a time. First derive the invariant or closed form, then tabulate bounded quantities, replace repeated range scans with prefix aggregates, and recognize pairwise index-combination loops as polynomial convolution. Use NTT",
+    "family": "combinatorics",
+    "tags": [
+      "dynamic-programming",
+      "generating-functions",
+      "polynomial-convolution",
+      "NTT",
+      "FFT",
+      "FWT",
+      "combinatorics",
+      "modular-arithmetic",
+      "precomputation",
+      "prefix-sums"
+    ],
+    "triggers": [
+      "A DP transition contains an inner loop of the form dp[target + offset] += source[target] * kernel[offset].",
+      "The same bounded power, inverse, binomial, probability, or subtree-size expression is recomputed inside a hot loop.",
+      "A helper scans an entire interval for every query even though its result depends only on endpoints, parity, minima, maxima, or prefix aggregates.",
+      "Nested loops combine all pairs of values and contribute only by their sum, difference, or total degree.",
+      "A state evolves as value *= base across every exponent or time step, producing a sequence of field power sums.",
+      "The modulus is NTT-friendly, or the required transform length is a manageable power of two.",
+      "Tree formulas repeatedly call modular exponentiation or inversion with arguments drawn from a small bounded domain such as subtree sizes.",
+      "A hot loop performs repeated modular inverses, binary exponentiation, or division-based modulo reductions."
+    ]
+  },
+  {
+    "skill_id": "O029",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Compress Decimal Search into Structural Arithmetic",
+    "description": "Reusable optimization pattern distilled from weighted traces.",
+    "family": "digit",
+    "tags": [
+      "optimization",
+      "competitive-programming",
+      "C++",
+      "decimal-digits",
+      "digit-processing",
+      "arithmetic-aggregation",
+      "state-compression",
+      "remainder-automaton",
+      "cycle-detection",
+      "monotone-search"
+    ],
+    "triggers": [
+      "A loop scans every integer even though the predicate depends only on digit length, a fixed digit pattern, or a small decimal alphabet.",
+      "A digit-sum or digit-membership helper is called repeatedly for consecutive values.",
+      "The code constructs large decimal numbers with x = x * 10 + digit before taking a modulus.",
+      "A recurrence or divisibility condition depends only on the current remainder.",
+      "A mutable decimal string is repeatedly incremented, carry-normalized, and rescanned.",
+      "An adaptive search repeatedly multiplies a decimal step by 10 or probes nearby candidates.",
+      "The objective is a ratio such as value / digit_sum(value), and floating-point division is used for ordering.",
+      "The valid candidates have a recognizable decimal form such as trailing 9s, palindromes, or digits from a fixed set."
+    ]
+  },
+  {
+    "skill_id": "O030",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Ordered Transformed DP with Monotone Range Min Structures",
+    "description": "Reusable optimization pattern distilled from weighted traces.",
+    "family": "dp",
+    "tags": [
+      "dynamic-programming",
+      "dp-optimization",
+      "sorted-coordinates",
+      "offline-processing",
+      "range-minimum-query",
+      "fenwick-tree",
+      "segment-tree",
+      "prefix-minimum",
+      "suffix-minimum",
+      "monotone-boundary"
+    ],
+    "triggers": [
+      "The recurrence has the form dp[i] = min_j(dp[j] + cost(j, i)) over sorted positions.",
+      "A predecessor remains valid over a contiguous future interval or under a monotone distance threshold.",
+      "The transition contains max, abs, or piecewise-linear terms that can be split into a small number of affine cases.",
+      "A binary-search boundary, two-pointer boundary, or doubled-coordinate threshold moves monotonically with i.",
+      "The implementation scans all predecessors, uses a size-based quadratic fallback, or has ad hoc branch-specific queue logic.",
+      "A single rolling minimum or scalar summary is used even though different predecessor ranges or transformed cost families matter.",
+      "A segment tree is used only for prefix or suffix minima, or a full-tree traversal is needed merely to extract the final minimum.",
+      "An ordered set or map maintains a dominated skyline for repeated prefix-maximum or prefix-minimum queries."
+    ]
+  },
+  {
+    "skill_id": "O031",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Structure Aware Knapsack DP Compression",
+    "description": "Replace generic, heuristic, or over-dimensional knapsack implementations with a DP whose state matches the true constraint structure. Tighten bounds from loose capacity or value domains to actual reachable limits; reparameterize weights around a common baseline when item weights differ by only a small bounded offset; eliminate redundant reachability arrays, count dimensions, greedy reconstruction, and repeated",
+    "family": "dp",
+    "tags": [
+      "dynamic_programming",
+      "0_1_knapsack",
+      "bounded_knapsack",
+      "subset_sum",
+      "state_compression",
+      "bound_tightening",
+      "weight_normalization",
+      "value_based_dp",
+      "prefix_suffix_dp",
+      "performance_optimization"
+    ],
+    "triggers": [
+      "A generic capacity-based DP scans a large W although n or another structural bound is small.",
+      "Item weights are all close to a common base or belong to a few adjacent weight classes.",
+      "A DP tracks both count and sum while accepting only states satisfying sum = count * K or another affine relation.",
+      "A boolean reachability array duplicates information already represented by a value or cost array.",
+      "The hot loop checks reachability and capacity bounds for every transition.",
+      "A full loop over DP states is followed by another full loop over all items for greedy reconstruction.",
+      "Repeated temporary vectors, object copies, or layer allocations occur inside the item loop.",
+      "A 1D subset-sum DP is followed by interval arithmetic to recover order, frontier, or distinguished-last-item semantics."
+    ]
+  },
+  {
+    "skill_id": "O032",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Local State and Data Layout Optimization",
+    "description": "Optimize C++ solutions by preserving the mathematical strategy while removing redundant rescans, unnecessary state reconstruction, and representation overhead. Identify the true hot loop, exploit fixed small dimensions with compact states or bitmasks, maintain monotone state incrementally, and choose storage that matches the access pattern. Prefer predictable forward scans, suffix-only updates, row-major locality",
+    "family": "state_compression",
+    "tags": [
+      "constant-factor-optimization",
+      "data-layout",
+      "cache-locality",
+      "incremental-maintenance",
+      "amortized-analysis",
+      "bitmask",
+      "gf2",
+      "gaussian-elimination",
+      "backtracking",
+      "dense-dp"
+    ],
+    "triggers": [
+      "An inner loop rewinds or restarts its induction variable after a state change.",
+      "The same rows, columns, cells, or prefixes are rescanned after each monotone deletion, cut, pivot, or update.",
+      "A solution rebuilds counts, frontiers, or DP transitions from scratch even though only a small subset of entities changed.",
+      "A subset search repeatedly materializes, flips, scores, and restores large states.",
+      "The objective decomposes by column, row, bit, or coordinate, allowing incremental aggregates or bitmask evaluation.",
+      "One dimension is tiny and fixed, such as at most a few dozen bits, around ten rows, or four local DP states.",
+      "GF(2) elimination uses fixed-width packed rows but repeatedly touches columns before the current pivot.",
+      "A dense matrix is accessed both row-major and column-major in hot validation loops."
+    ]
+  },
+  {
+    "skill_id": "O033",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Algebraic Collapse and Hot Path Cleanup",
+    "description": "Optimize already-correct or near-correct C++ solutions by first searching for mathematical identities, closed forms, direct feasibility conditions, and structural invariants before applying micro-optimizations. Replace bounded simulation, repeated probabilistic summation, brute-force reconstruction, and incremental threshold searches with exact formulas when the recurrence or equations permit it. Within loops that",
+    "family": "combinatorics",
+    "tags": [
+      "math",
+      "closed-form",
+      "algebraic-simplification",
+      "constant-factor",
+      "hot-loop",
+      "common-subexpression-elimination",
+      "simulation-elimination",
+      "integer-arithmetic",
+      "modular-arithmetic",
+      "frequency-counting"
+    ],
+    "triggers": [
+      "A loop accumulates a sequence with a recognizable formula such as a triangular number or geometric series.",
+      "A large fixed-count loop approximates an expectation or probability tail using multiplicative decay.",
+      "A brute-force variable is only an algebraic unknown and all constructed values are affine expressions of it.",
+      "The same pure expression, power, product, modulo, or array lookup is evaluated multiple times in one iteration.",
+      "A condition is written through a derived temporary instead of the direct feasibility or comparison it represents.",
+      "A formula contains repeated additions, subtractions, or expanded ceil/floor division that can be algebraically collapsed.",
+      "A scan iterates over an entire domain even though only values occurring in the input can contribute.",
+      "A previous-occurrence or state transition needs only the latest indexed value but uses binary search or a heavier structure."
+    ]
+  },
+  {
+    "skill_id": "O034",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Invariant Driven Linearization and State Simplification",
+    "description": "Recognize when an optimization implementation is already linear but obscured by repeated scans, branch-heavy casework, mutable rolling state, or unnecessary simulation. Derive the governing invariant or separable formula, then express the solution as a simple scan, prefix-sum query, sliding-window update, chain decomposition, cycle-index lookup, or constant-time arithmetic formula. Prefer deterministic control",
+    "family": "graph",
+    "tags": [
+      "optimization",
+      "invariants",
+      "greedy",
+      "math",
+      "closed-form",
+      "prefix-sum",
+      "sliding-window",
+      "single-pass",
+      "state-machine",
+      "sequence-segmentation"
+    ],
+    "triggers": [
+      "A nested scan only searches for the next unequal element or next direction change.",
+      "The objective depends on adjacent comparisons, while equal neighbors are neutral.",
+      "A mutable rolling state mixes window sums, positive contributions, and entering/leaving updates whose invariants are difficult to verify.",
+      "A fixed-length contiguous segment is evaluated against its complement.",
+      "The score can be separated into an inside-window term and prefix/suffix or outside-window terms.",
+      "Sorted coordinates are processed with sign-specific cases around zero or another breakpoint.",
+      "A monotonic queue or range-minimum structure is rebuilt for every candidate size even though successive states differ incrementally.",
+      "A bounded precomputation loop accumulates a recognizable arithmetic, geometric, or expectation formula."
+    ]
+  },
+  {
+    "skill_id": "O035",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Coordinate Compressed Fenwick Order Statistics",
+    "description": "Replace repeated scans, heavy ordered containers, or specialized selection structures with offline coordinate compression and flat Fenwick trees. Represent values, ranks, prefix balances, or derived permutations as 1-based indices, then answer prefix counts, weighted sums, inversion contributions, k-th queries, and dynamic median costs in O(log n) per operation. When feasibility is monotone in a threshold, combine",
+    "family": "dp",
+    "tags": [
+      "coordinate-compression",
+      "fenwick-tree",
+      "order-statistics",
+      "prefix-sums",
+      "counting",
+      "offline-processing",
+      "online-queries",
+      "binary-search-on-answer",
+      "inversion-counting",
+      "dynamic-median"
+    ],
+    "triggers": [
+      "A loop repeatedly scans prior elements to count values below, above, or within a threshold.",
+      "Queries require prefix frequencies, weighted prefix sums, inversion counts, rank counts, or DP transitions over ordered values.",
+      "Values are large, negative, sparse, or otherwise unsuitable for direct indexing.",
+      "A dynamic multiset needs median or k-th selection together with sums or absolute-deviation costs.",
+      "A monotone answer predicate asks whether a prior value exists in a threshold-dependent range.",
+      "A permutation is formed by sorting on multiple keys and then requires repeated prior-rank counting.",
+      "PBDS, map, multiset, or pointer-heavy trees are used only for prefix counts or sums.",
+      "A separate special case handles the empty prefix or base prefix condition."
+    ]
+  },
+  {
+    "skill_id": "O036",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Fixed Alphabet Streaming State",
+    "description": "Optimize string and small-universe checks by replacing sorting, pair materialization, repeated preprocessing, mutation, reversal, and indirect searches with direct-address tables and one-pass state machines. When the alphabet or encoded key universe is bounded, use std::array or correctly sized flat tables for predictable cache-friendly access. Express the actual invariant directly, validate mappings in both",
+    "family": "streaming",
+    "tags": [
+      "C++",
+      "strings",
+      "fixed-alphabet",
+      "direct-addressing",
+      "frequency-counting",
+      "bijection-check",
+      "streaming",
+      "finite-state-scan",
+      "early-exit",
+      "constant-factor-optimization"
+    ],
+    "triggers": [
+      "The input symbols come from a small fixed alphabet relative to the string length.",
+      "Sorting aligned character pairs is used only to group equal keys before checking consistency.",
+      "A map, frequency signature, or lookup can be represented by an indexed table.",
+      "A reverse, temporary buffer, or in-place character remapping exists only to simplify later comparison.",
+      "Synthetic marker characters encode multi-character tokens before counting or scanning.",
+      "The property depends on local adjacency, a bounded lookahead window, or a few running counters.",
+      "A direct-address table is reused across multiple datasets without explicit clearing.",
+      "Character values are used directly as array indices, especially when plain char may be signed."
+    ]
+  },
+  {
+    "skill_id": "O037",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Offline Batch Restructuring with Contiguous Sorts and Compact Lookup",
+    "description": "Optimize offline C++ workloads by matching the representation and data structure to the actual query pattern. Replace quadratic or repeated-pass ordering with one std::sort over contiguous records and preserve original indices for output. When ranking is independent by a categorical key, bucket records by group, sort each bucket once, and emit answers in original order. For offline distinct counting, prefer",
+    "family": "graph",
+    "tags": [
+      "offline-processing",
+      "sorting",
+      "contiguous-data",
+      "custom-comparator",
+      "original-index-preservation",
+      "grouped-ranking",
+      "lexicographic-order",
+      "deduplication",
+      "hashing",
+      "rolling-hash"
+    ],
+    "triggers": [
+      "A batch task uses bubble sort, repeated insertion, adjacent swaps, or repeated scans to produce a final ordering.",
+      "The result requires sorted composite keys but output must refer to original positions.",
+      "A second global sort exists only to restore input order.",
+      "The required rank or answer depends only on records sharing a group key.",
+      "A custom hash table has far fewer buckets than stored elements or covers a huge sparse key universe.",
+      "The goal is offline distinct counting rather than online membership queries.",
+      "A hot comparator repeats strcmp, string comparisons, or other expensive work for the same operands.",
+      "A binary-search feasibility check performs many std::map operations or uses operator[] for read-only membership tests."
+    ]
+  },
+  {
+    "skill_id": "O038",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Problem Aware Candidate Reduction with Standard Sorting",
+    "description": "Replace bespoke radix sorting, packed integer keys, repeated full scans, and unnecessary data expansion with a representation that matches the actual operation: direct typed records, one-time sorting, bounded candidate generation, and a linear greedy or grouping scan. For moderate competitive-programming limits, prefer optimized STL sorting when it removes multiple memory passes and implementation fragility",
+    "family": "coprimality",
+    "tags": [
+      "sorting",
+      "greedy",
+      "candidate-reduction",
+      "top-n-selection",
+      "interval-scheduling",
+      "offline-processing",
+      "grouping",
+      "rank-compression",
+      "binary-search",
+      "radix-sort"
+    ],
+    "triggers": [
+      "A custom radix/counting sorter is used for ordinary 32-bit or pair-valued data at roughly 1e5 to 3e5 elements.",
+      "The logical solution needs only one ordering followed by a greedy scan, equal-key grouping, rank assignment, or top-N aggregation.",
+      "Only the best N final values matter, while replacement operations may generate many identical candidates.",
+      "Sortable state is naturally a pair or record, but the code packs it into a 64-bit key and later unpacks it.",
+      "Queries operate on static sorted data and currently perform repeated full scans.",
+      "Metadata such as original indices, counts, or prefix information must remain attached to keys during sorting.",
+      "Large temporary arrays, multiple whole-array radix passes, manual signed-order correction, or fragile custom input code dominate optimization effort.",
+      "The input scale is moderate enough that tuned std::sort and contiguous vectors are likely competitive with hand-written radix code."
+    ]
+  },
+  {
+    "skill_id": "O039",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Exploit Tiny Fixed Alphabets with Flat State and Incremental Greedy Scans",
+    "description": "When string processing is restricted to a small fixed alphabet, replace generic containers, repeated substring rescans, dense per-position transition tables, and recursive candidate search with compact arrays, bitmasks, occurrence-position sets, rolling state, and direct greedy reconstruction. Store only the information the query needs: frequencies for multiset operations, presence bits for distinctness, latest",
+    "family": "state_compression",
+    "tags": [
+      "strings",
+      "fixed-alphabet",
+      "constant-alphabet",
+      "greedy",
+      "frequency-counting",
+      "bitmask",
+      "prefix-suffix",
+      "next-occurrence",
+      "lexicographic-order",
+      "range-query"
+    ],
+    "triggers": [
+      "The alphabet is fixed and tiny, commonly lowercase English letters.",
+      "A hot loop uses map, set, unordered_map, or string-keyed containers for character classes.",
+      "The code stores an N-by-alphabet table although only the current or latest transition state is needed.",
+      "Each split, prefix, or suffix is repeatedly rescanned for character presence or counts.",
+      "A query asks only whether a character exists, rather than its exact frequency.",
+      "The task needs one lexicographically minimal or next answer, not an enumeration of candidates.",
+      "A recursive lexicographic search repeatedly discovers matching transitions by scanning the same source.",
+      "Point updates move positions between character classes and range queries test per-letter existence."
+    ]
+  },
+  {
+    "skill_id": "O040",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Compress Small State Dynamic Programs",
+    "description": "When a C++ solution uses a large or repeatedly materialized DP for a process with a tiny finite state space, expose the true state invariant, remove redundant dimensions, and optimize the implementation around adjacent-layer transitions. Replace inflated digit, residue, orientation, carry, or bitmask states with the smallest sufficient automaton; use rolling arrays or scalar variables when only the previous layer",
+    "family": "digit",
+    "tags": [
+      "dynamic-programming",
+      "state-compression",
+      "rolling-array",
+      "finite-state-automaton",
+      "digit-dp",
+      "modulo-state-dp",
+      "bitmask-dp",
+      "counting",
+      "memoization",
+      "greedy-unranking"
+    ],
+    "triggers": [
+      "Every layer depends only on the immediately previous layer.",
+      "A DP table stores positions or history that are never revisited.",
+      "The state dimension is fixed and small, but the implementation uses nested vectors, oversized arrays, or full 2D history.",
+      "Many states are impossible, equivalent, or differ only by a small mode such as carry, orientation, tightness, or remainder.",
+      "A digit or string DP uses a tiny residue or automaton state and a long input.",
+      "Hot loops repeatedly compute the same transition, modulo, comparison class, or bitmask update.",
+      "Transitions write to an overflow bucket such as K+1 that is never queried.",
+      "A queue or BFS is used only to obtain the k-th lexicographically or numerically ordered object."
+    ]
+  },
+  {
+    "skill_id": "O041",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Audit the Real Hot Path Before Optimizing",
+    "description": "A C++ optimization-audit skill for paired slow/fast snippets that are identical, truncated, or limited to template and macro scaffolding. Do not infer an algorithmic speedup from headers, pragmas, macros, typedefs, or compiler flags alone. First require the complete executable path, then compare asymptotics, data structures, allocation behavior, I/O, and debug code. Apply constant-factor tuning only after a genuine",
+    "family": "constant_factor",
+    "tags": [
+      "c++",
+      "competitive-programming",
+      "performance-audit",
+      "incomplete-source",
+      "paired-optimization",
+      "hot-path-analysis",
+      "debug-output",
+      "fast-io",
+      "container-choice",
+      "compile-time-hygiene"
+    ],
+    "triggers": [
+      "The slow and fast snippets are identical in the visible region.",
+      "The source is truncated before main(), solve(), input parsing, or algorithm-specific helpers.",
+      "Only headers, typedefs, macros, debug utilities, or template boilerplate are visible.",
+      "No loops, recursion, state transitions, container operations, sorting, traversal, or query processing can be inspected.",
+      "The reported complexity change is unknown, unchanged, or unsupported by the supplied code.",
+      "Debug macros, string formatting, stringstream, cerr/cout, or endl may be enabled in omitted hot paths.",
+      "Heavy standard-library headers or PBDS/rope inclusions suggest compile-time bloat rather than runtime cost.",
+      "Global widening such as defining int as long long may affect memory traffic, but its relevance depends on unseen data sizes and loops."
+    ]
+  },
+  {
+    "skill_id": "O042",
+    "type": "operator",
+    "language": "cpp",
+    "name": "Structure Aware Sparse MST Processing",
+    "description": "Optimize large C++ MST and MST-derived computations by exploiting graph structure before tuning DSU or sorting. First determine whether dense geometric edges can be sparsified to a linear candidate set, whether an adjacency-driven Prim sweep avoids a global sort, whether structured edges can be processed directly, or whether equal-weight edges require one compressed low-link analysis per weight block. For ordinary",
+    "family": "graph",
+    "tags": [
+      "graph",
+      "minimum-spanning-tree",
+      "kruskal",
+      "prim",
+      "disjoint-set-union",
+      "sparsification",
+      "offline-processing",
+      "equal-weight-batching",
+      "lowlink",
+      "computational-geometry"
+    ],
+    "triggers": [
+      "The graph is geometric or otherwise structured, and edge cost depends on coordinate differences or local order.",
+      "The naive candidate graph is dense or quadratic, while sorted coordinate views expose locality.",
+      "The input graph is already sparse and adjacency is natural, but profiling identifies global edge sorting as the dominant cost.",
+      "The graph contains a cycle, ring, or other structured edge family that can be processed without materializing all generic edges.",
+      "Many edges share the same weight and edge classification or MST-role analysis is required.",
+      "The implementation reruns connectivity or MST construction for many overlapping edge ranges.",
+      "Undirected edges are stored twice, all MST edges are buffered, or Kruskal continues after the required result is determined.",
+      "DSU uses recursive find without balancing, performs repeated root lookups, or has incorrect rank updates."
+    ]
+  }
+]

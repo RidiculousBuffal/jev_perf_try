@@ -1,0 +1,1371 @@
+[
+  {
+    "skill_id": "S1",
+    "type": "meta",
+    "language": "python",
+    "name": "Diagnose Slow Code",
+    "description": "Produce OptimizationBrief JSON with constraints, bottlenecks, and complexity."
+  },
+  {
+    "skill_id": "S2",
+    "type": "meta",
+    "language": "python",
+    "name": "Retrieve Operator Skills",
+    "description": "Select a dynamic set of operator skills from metadata and confidence."
+  },
+  {
+    "skill_id": "S3",
+    "type": "meta",
+    "language": "python",
+    "name": "Strategize",
+    "description": "Compose selected skills into 2-4 diverse executable strategies."
+  },
+  {
+    "skill_id": "S4",
+    "type": "meta",
+    "language": "python",
+    "name": "Judge",
+    "description": "Rank candidates with static reasoning on complexity, correctness risk, and bottleneck removal."
+  },
+  {
+    "skill_id": "O001",
+    "type": "operator",
+    "language": "python",
+    "name": "Python Hot Path and I/O Constant Factor Optimization",
+    "description": "Reusable optimization pattern distilled from weighted traces.",
+    "family": "constant_factor",
+    "tags": [
+      "python-optimization",
+      "constant-factors",
+      "fast-input",
+      "buffered-output",
+      "allocation-reduction",
+      "hot-loop",
+      "greedy",
+      "sorting",
+      "array-scan",
+      "range-query"
+    ],
+    "triggers": [
+      "The slow and fast variants use the same data structure, traversal count, and asymptotic algorithm.",
+      "Numeric input is parsed with eval, exec, repeated conversions, or unbuffered input calls.",
+      "Large inputs are processed with input() or repeated per-item parsing.",
+      "Output is printed once per query or answer instead of being buffered.",
+      "A hot path creates slices, reversed copies, sorted copies, tuples, or other temporary collections.",
+      "A loop uses repeated pop, len, attribute lookup, function calls, or complex expression-level control flow.",
+      "A generator, comprehension, or builtin is used in a performance-critical path where a simple scalar loop may be cheaper.",
+      "Queries are stored eagerly even though each can be processed online."
+    ]
+  },
+  {
+    "skill_id": "O002",
+    "type": "operator",
+    "language": "python",
+    "name": "Exploit Locality, Dominance, and Compressed State in Dynamic Programs",
+    "description": "Redesign an overbuilt dynamic program or search by identifying the smallest sufficient state, eliminating dominated histories, and exploiting structured transitions. Typical transformations include rolling or in-place arrays for fixed-width dependencies, scalar recurrences when monotonicity proves larger states irrelevant, bucket or frequency states for interchangeable resources, direct backward reachability",
+    "family": "graph",
+    "tags": [
+      "dynamic_programming",
+      "state_compression",
+      "rolling_array",
+      "in_place_dp",
+      "dominance_pruning",
+      "reachability",
+      "greedy_recurrence",
+      "combinatorics",
+      "functional_graph",
+      "binary_lifting"
+    ],
+    "triggers": [
+      "A state depends only on a fixed number of previous positions or layers.",
+      "A DP table is retained although only the final value or a narrow frontier is needed.",
+      "A 2D or layered DP row depends only on the preceding row.",
+      "A brute-force loop enumerates all binary choices or bitmasks.",
+      "All future transitions are monotone in a scalar state, so larger intermediate states may be dominated.",
+      "Several symmetric counters or entities undergo identical updates.",
+      "Transitions move only forward on a bounded line or use a small fixed move set.",
+      "The same suffix, cycle, prefix sum, or subproblem is recomputed for many starts."
+    ]
+  },
+  {
+    "skill_id": "O003",
+    "type": "operator",
+    "language": "python",
+    "name": "Normalize Graph Searches and Tighten State Space Kernels",
+    "description": "Optimize graph-heavy Python solutions by first matching the algorithm to the graph structure, then minimizing hot-loop overhead. Replace implicit layered searches with explicit shortest-path models such as BFS, 0-1 BFS, Dijkstra, or monotone relaxation; use dense all-pairs methods when the vertex set is small; and represent bounded expanded states with compact arrays and implicit transitions. Preserve brute force",
+    "family": "graph",
+    "tags": [
+      "graph",
+      "shortest-path",
+      "dijkstra",
+      "0-1-bfs",
+      "floyd-warshall",
+      "all-pairs-shortest-path",
+      "state-space-search",
+      "resource-constrained-path",
+      "modular-state-graph",
+      "transitive-closure"
+    ],
+    "triggers": [
+      "A heap-based shortest-path implementation expands the same vertex or state after its heap entry has become obsolete.",
+      "The state is a pair such as (vertex, bounded resource), and the resource range has a provable small cap.",
+      "Transitions are generated eagerly for every expanded state even though only a few implicit moves are needed when a state is popped.",
+      "The search uses a list queue with pop(0), repeated frontier rebuilding, or closure expansion under a free operation.",
+      "All edge costs are 0 or 1, or the objective is the minimum number of expensive operations.",
+      "The state naturally consists of residues modulo a small integer.",
+      "A small graph is processed by many repeated Dijkstra or BFS runs, or a pure-Python triple-loop APSP dominates runtime.",
+      "The required result depends on exact distances between every pair or between a small set of distinguished vertices."
+    ]
+  },
+  {
+    "skill_id": "O004",
+    "type": "operator",
+    "language": "python",
+    "name": "Fuse String Scans and Exploit Fixed Domains",
+    "description": "Optimize string-heavy Python solutions by aligning the implementation with the actual invariant: stream input when only aggregates are needed, replace repeated scans with one-pass state or histogram accumulation, avoid temporary lists, slices, unpacking, and per-character output, and use direct indexing or arithmetic for tiny fixed alphabets. When mutable positional queries are required, substitute linear-time",
+    "family": "streaming",
+    "tags": [
+      "python-optimization",
+      "string-processing",
+      "single-pass-scan",
+      "streaming",
+      "fixed-domain",
+      "histogram",
+      "state-machine",
+      "constant-factor",
+      "allocation-reduction",
+      "fast-io"
+    ],
+    "triggers": [
+      "The same large string is rescanned for many fixed symbols or patterns.",
+      "Input is accumulated or normalized even though only counts, transitions, endpoints, or a small summary are required.",
+      "A temporary list, slice, starred-unpacking target, matrix, or joined buffer is created only to inspect length, endpoints, or membership.",
+      "A loop prints one character or small fragment per iteration.",
+      "A fixed alphabet or value domain is tiny enough for an array, direct arithmetic, or one structure per symbol.",
+      "Hot loops call linear lookup methods such as index on a constant alphabet.",
+      "Adjacent-pattern counting can be expressed using previous-character state.",
+      "A transformation is independent per character and can be buffered and emitted once."
+    ]
+  },
+  {
+    "skill_id": "O005",
+    "type": "operator",
+    "language": "python",
+    "name": "Collapse Repetitive Simulation into Arithmetic and Tight State Transitions",
+    "description": "Replace loops that repeatedly subtract, add, round, or count fixed-size progress with direct integer arithmetic, usually quotient, remainder, ceiling division, or an algebraically derived invariant. When a closed form is unavailable, preserve the algorithm while removing avoidable allocations, copying, repeated container operations, and unnecessary state. Stream one-pass inputs when random access is not required",
+    "family": "dp",
+    "tags": [
+      "simulation-to-formula",
+      "closed-form",
+      "ceiling-division",
+      "integer-arithmetic",
+      "invariant",
+      "greedy",
+      "state-compression",
+      "constant-factor-optimization",
+      "streaming",
+      "allocation-reduction"
+    ],
+    "triggers": [
+      "A loop repeatedly subtracts or adds the same fixed amount and only the final count matters.",
+      "The answer is the minimum integer k satisfying a linear threshold inequality.",
+      "A loop counter equals a quotient, or an overshoot correction equals a remainder.",
+      "The result depends only on grouped counts, weights, quotients, remainders, or the current scalar state.",
+      "A modulo check followed by a conditional increment implements ceiling division.",
+      "A list, slice, reverse, or temporary container is created only to be iterated once.",
+      "A simulation repeatedly scans suffixes or prefixes and performs avoidable copying.",
+      "A local greedy process mutates only adjacent positions and can be represented by a carry or leftover."
+    ]
+  },
+  {
+    "skill_id": "O006",
+    "type": "operator",
+    "language": "python",
+    "name": "Collapse Structured Enumeration into Class Counts and Direct Top Candidate Selection",
+    "description": "Reusable optimization pattern distilled from weighted traces.",
+    "family": "combinatorics",
+    "tags": [
+      "counting",
+      "parity",
+      "combinatorics",
+      "closed-form",
+      "frequency-counting",
+      "bounded-domain",
+      "top-2-selection",
+      "prefix-sums",
+      "suffix-counts",
+      "simulation-to-formula"
+    ],
+    "triggers": [
+      "Nested loops enumerate pairs, triples, combinations, or a fixed-radius neighborhood while the predicate depends only on parity, color, category, or another small equivalence class.",
+      "Constructed values are used only through a property such as parity; their exact magnitudes never affect the result.",
+      "A result is obtained from len(list(combinations( ))) or similar materialization even though only the count is needed.",
+      "A full grid simulation uses XOR/toggling or repeated local updates, and the final state appears to depend only on contributor-count parity or geometric regions.",
+      "A generic DP transition looks back by a fixed small offset, especially two positions, suggesting parity-separated or segment-structured states.",
+      "A total count minus structured exceptions formulation still performs expensive pair scans or repeated membership checks.",
+      "A frequency map is inverted into buckets or fully sorted even though only the best one or two candidates matter.",
+      "Values lie in a known small nonnegative domain, making direct-address arrays cheaper than hash tables."
+    ]
+  },
+  {
+    "skill_id": "O007",
+    "type": "operator",
+    "language": "python",
+    "name": "Precompute Modular Combinatorics and Simplify Counting",
+    "description": "Optimize repeated binomial-coefficient computations and combinatorial counting by replacing exact or per-query multiplicative construction with reusable factorial, inverse, and inverse-factorial tables under a prime modulus. When the count is constrained by a two-variable linear equation, enumerate one variable directly, solve the other with a divisibility check, and evaluate the contribution with O(1) binomial",
+    "family": "combinatorics",
+    "tags": [
+      "combinatorics",
+      "binomial-coefficients",
+      "modular-arithmetic",
+      "prime-modulus",
+      "factorial-precomputation",
+      "inverse-factorials",
+      "contribution-technique",
+      "diophantine-enumeration",
+      "sorting",
+      "counting"
+    ],
+    "triggers": [
+      "A binomial helper loops over r or constructs numerator and denominator products for every query.",
+      "A combination helper performs modular exponentiation or inversion on every call.",
+      "Many outputs use combinations with a common maximum n and a prime modulus.",
+      "Factorial tables are rebuilt per query or sized to a fixed bound unrelated to the actual constraints.",
+      "A full inverse-factorial table is built using repeated modular exponentiation when one inverse and a reverse sweep would suffice.",
+      "A counting formula contains a nested overlap or convolution-style summation despite only two bounded variables satisfying a linear relation.",
+      "The code uses gcd/lcm transformations and branch-heavy feasibility logic where direct divisibility testing is possible.",
+      "A sorted-array solution separately computes minimum and maximum contributions, creates ascending and descending copies, or repeats equivalent binomial queries."
+    ]
+  },
+  {
+    "skill_id": "O008",
+    "type": "operator",
+    "language": "python",
+    "name": "Bounded State Knapsack Compression",
+    "description": "Reusable optimization pattern distilled from weighted traces.",
+    "family": "state_compression",
+    "tags": [
+      "dynamic_programming",
+      "0_1_knapsack",
+      "subset_sum",
+      "value_based_dp",
+      "state_compression",
+      "dimension_reduction",
+      "bounded_state_space",
+      "pseudo_polynomial",
+      "tree_dp",
+      "memory_optimization"
+    ],
+    "triggers": [
+      "A brute-force loop enumerates combinations of bucket counts, subsets, or group selections.",
+      "A DP tracks two quantities whose acceptance condition is only a linear relation between them.",
+      "A subset-average or ratio condition can be rewritten as a zero-sum or zero-balance condition.",
+      "A DP dimension is sized from a target parameter or raw total even though item values impose a smaller bound.",
+      "A full 2D or 3D DP transition depends only on the previous layer.",
+      "A 0/1 knapsack recurrence is implemented with row copies, deep copies, circular shifts, or large temporary arrays.",
+      "A Python DP uses sets or dictionaries for dense integer sums within a small known numeric range.",
+      "Weights are close to a common base, so total weight decomposes into chosen_count times base plus a small offset."
+    ]
+  },
+  {
+    "skill_id": "O009",
+    "type": "operator",
+    "language": "python",
+    "name": "Invariant Driven Optimization and Data Structure Strengthening",
+    "description": "Optimize implementations by first identifying the smallest state or exact combinatorial objective required by the output, then replacing fragile simulations, redundant arithmetic, repeated scans, mutable-list operations, and hash-heavy storage with structures aligned to the invariant. Typical upgrades include parity propagation on trees, iterative traversal, dense boolean marking, set-based membership, coordinate",
+    "family": "graph",
+    "tags": [
+      "state-compression",
+      "parity-propagation",
+      "tree-traversal",
+      "iterative-graph-processing",
+      "dense-indexing",
+      "coordinate-compression",
+      "fenwick-tree",
+      "order-statistics",
+      "bipartite-matching",
+      "maximum-flow"
+    ],
+    "triggers": [
+      "The output uses only a projection of maintained state, such as parity rather than full weighted distance.",
+      "The input is a tree or otherwise has unique paths, allowing one traversal to propagate all required states.",
+      "Recursive traversal, extreme recursion limits, or repeated full traversals appear in Python.",
+      "A loop repeatedly performs membership checks against a list.",
+      "Identifiers are dense integers in a known bounded range and the task only needs membership or overlap.",
+      "A solution repeatedly removes elements from Python lists or rescans unmatched candidates.",
+      "Each item can be used at most once and compatibility is a pairwise boolean relation.",
+      "A greedy pairing exists, but local choices can affect the global maximum."
+    ]
+  },
+  {
+    "skill_id": "O010",
+    "type": "operator",
+    "language": "python",
+    "name": "Constant Time Predicate Simplification",
+    "description": "A reusable skill for optimizing fixed-size Python programs whose executed logic is already O(1). Preserve the interface and semantics while simplifying boolean decision trees, replacing indirect or fragile expressions with explicit predicates, applying safe integer algebra, removing dead templates and unused imports, and avoiding unnecessary temporary allocations. Treat these as clarity, correctness",
+    "family": "constant_factor",
+    "tags": [
+      "micro-optimization",
+      "constant-time",
+      "predicate-simplification",
+      "branch-reduction",
+      "boolean-logic",
+      "integer-arithmetic",
+      "numeric-stability",
+      "range-check",
+      "fixed-input",
+      "dead-code-elimination"
+    ],
+    "triggers": [
+      "Input consists of a fixed, tiny number of scalar values.",
+      "The executed path has no data-size-dependent loops, recursion, searches, or repeated queries.",
+      "The core operation is one equality, inequality, threshold, range, parity, or distinctness check.",
+      "A dense boolean expression mixes and/or operators or relies on implicit precedence.",
+      "Mirrored or nested branches repeat the same special-case logic.",
+      "An inclusive interval test is expressed through negated comparisons instead of chained comparison.",
+      "Integer inequalities use floating-point division unnecessarily.",
+      "Small fixed-size data is wrapped in list, set, comprehension, or other containers without need."
+    ]
+  },
+  {
+    "skill_id": "O011",
+    "type": "operator",
+    "language": "python",
+    "name": "Compress Repeated Optimization into Monotone Feasibility, Greedy State, or Algebraic Candidates",
+    "description": "Reusable optimization pattern distilled from weighted traces.",
+    "family": "streaming",
+    "tags": [
+      "binary-search-on-answer",
+      "monotone-feasibility",
+      "greedy-state-compression",
+      "bruteforce-to-greedy",
+      "algebraic-reformulation",
+      "closed-form-case-analysis",
+      "streaming-minimum",
+      "candidate-pruning",
+      "aggregation",
+      "simulation-elimination"
+    ],
+    "triggers": [
+      "The objective asks for the smallest or largest threshold satisfying a condition that becomes permanently true or false as the threshold changes.",
+      "A binary-search check scans the full array and performs repeated expensive arithmetic, allocation, or library calls.",
+      "A process repeatedly sorts, redistributes, or applies uniform updates even though the final result may depend only on total operations and per-item deficits.",
+      "A brute-force search assigns each of n items to one of a fixed small number of groups and validates monotonicity or threshold constraints afterward.",
+      "A loop enumerates operation orders whose effects can be compared by a local swap argument.",
+      "A loop evaluates many scalar candidates and calls min() once, or stores candidates that are never reused.",
+      "A loop repeatedly adds the same constant or evaluates a piecewise-linear cost over a one-dimensional count.",
+      "A shared bundle or paired action affects two demands symmetrically."
+    ]
+  },
+  {
+    "skill_id": "O012",
+    "type": "operator",
+    "language": "python",
+    "name": "Collapse Structured Brute Force into Invariant, Geometric, or Bounded State Computation",
+    "description": "Optimize small or repetitive brute-force programs by first identifying mathematical structure, reusable witnesses, monotonicity, symmetry, locality, and bounded state dimensions. Replace numerical search or simulation with closed forms when possible; otherwise hoist candidate-independent work, restrict candidates to structural boundaries, use prefix or compressed counting for geometric queries, convert recursive",
+    "family": "dp",
+    "tags": [
+      "optimization",
+      "algebraic-simplification",
+      "closed-form",
+      "invariant-hoisting",
+      "geometry",
+      "coordinate-compression",
+      "prefix-sums",
+      "dynamic-programming",
+      "state-compression",
+      "sparse-enumeration"
+    ],
+    "triggers": [
+      "A general numerical optimizer is applied to a low-dimensional smooth objective with symmetry or a fixed-sum constraint.",
+      "A brute-force candidate loop repeatedly scans input to derive a value that is independent of the candidate or derivable from one fixed witness.",
+      "A permutation or route enumeration uses absolute differences on a line and appears to cover an interval.",
+      "A scan over cut positions has a convex, monotone, symmetric, or piecewise-linear objective whose optimum must lie near balanced divisions or structural boundaries.",
+      "A simulator repeatedly decrements, trims, copies, or recursively splits arrays while producing an area, envelope, or aggregate profile.",
+      "A nested loop repeatedly sorts overlapping subsets or slices and the result depends only on rectangle membership or range counts.",
+      "A profile is constrained by local slope changes and has a small bounded height or capacity dimension.",
+      "A large coordinate domain contains only sparse marked objects and each object affects only a constant-size neighborhood."
+    ]
+  },
+  {
+    "skill_id": "O013",
+    "type": "operator",
+    "language": "python",
+    "name": "Replace Representation Heavy Numeric Logic with Direct Arithmetic",
+    "description": "Optimize small and digit-oriented numeric tasks by modeling the mathematical property directly instead of reconstructing numbers through strings, dynamic evaluation, floating-point arithmetic, or unnecessary containers. Parse trusted numeric tokens explicitly, use divisibility invariants and suffix rules, preserve fixed-point decimals as scaled integers, simplify formulas algebraically, and batch or stream output",
+    "family": "digit",
+    "tags": [
+      "numeric-optimization",
+      "decimal-arithmetic",
+      "divisibility",
+      "digit-processing",
+      "fixed-point",
+      "input-parsing",
+      "constant-factors",
+      "integer-arithmetic",
+      "io-batching",
+      "formula-simplification"
+    ],
+    "triggers": [
+      "eval(input()) or dynamic expression evaluation is used for a fixed numeric format.",
+      "Digits are concatenated, sliced, replaced, or repeatedly converted to reconstruct a number.",
+      "A divisibility test can use a known invariant, such as digit sums or a limited decimal suffix.",
+      "The result depends only on the last digit or last few digits.",
+      "A fixed-width numeric input is processed as general-purpose text.",
+      "Floating-point parsing is followed by floor, truncation, or integer conversion.",
+      "Decimal inputs have known fixed precision.",
+      "A hot loop repeatedly calls str(), performs substring searches, or scans digits inefficiently."
+    ]
+  },
+  {
+    "skill_id": "O014",
+    "type": "operator",
+    "language": "python",
+    "name": "Invariant Driven Ordering and Enumeration Reduction",
+    "description": "Replace indirect simulations, repeated sorting, exhaustive candidate materialization, and numeric-range scans with the smallest data structure or formula that preserves the required invariant. First identify whether decisions depend on global order, extrema, bounded values, a monotone frontier, a FIFO stream, or direct index mapping. Then use one-time sorting plus a fold, a heap or ordered multiset for dynamic",
+    "family": "combinatorics",
+    "tags": [
+      "algorithmic-reduction",
+      "greedy",
+      "sorting",
+      "heap",
+      "best-first-search",
+      "ordered-multiset",
+      "binary-search",
+      "counting",
+      "extrema",
+      "interval-arithmetic"
+    ],
+    "triggers": [
+      "The same collection is globally sorted inside a loop after only a small update.",
+      "The operation repeatedly selects the current minimum or maximum.",
+      "State is partitioned by history or level even though the next decision depends only on current value order.",
+      "A Python list uses pop(0), repeated front deletion, or repeated full scans in a hot loop.",
+      "Only the top K combinations are needed, but code constructs and sorts a large Cartesian product.",
+      "A loop enumerates every integer in a range to test whether any value satisfies monotone inequalities.",
+      "Sorted data is used only for a few extrema, middle values, or a fixed-rank prefix.",
+      "A result depends only on aggregate values, residues, minima, maxima, or a small number of exceptional elements."
+    ]
+  },
+  {
+    "skill_id": "O015",
+    "type": "operator",
+    "language": "python",
+    "name": "Interval Aggregation, Sweep, and Batched DP Optimization",
+    "description": "Replace explicit interval-domain simulation, repeated slot assignment, redundant range tables, and interpreter-heavy transitions with the smallest representation matching the required aggregate. Use min/max aggregation for a common intersection, difference arrays or event sweeps for coverage and concurrency, per-channel sweeps when categories must be merged independently, doubled coordinates for boundary-sensitive",
+    "family": "dp",
+    "tags": [
+      "intervals",
+      "difference-array",
+      "imos",
+      "prefix-sum",
+      "sweep-line",
+      "interval-intersection",
+      "interval-overlap",
+      "maximum-concurrency",
+      "interval-dp",
+      "range-sum"
+    ],
+    "triggers": [
+      "The code paints every coordinate in every interval or stores a dense category-by-time matrix.",
+      "The output is a scalar aggregate such as union size, exact coverage count, maximum overlap, or number of points covered by every interval.",
+      "The code computes max(left endpoints) and min(right endpoints), then scans the whole domain.",
+      "Intervals are grouped by channel or category and overlapping intervals within one group should count once.",
+      "Endpoint behavior differs for touching intervals, or continuous-looking boundaries are encoded with fractional sentinels.",
+      "An interval DP has a split-point minimum and an additive range cost, with all equal-length states independent.",
+      "A full two-dimensional range-sum table exists only to answer interval sums.",
+      "A DP state repeatedly propagates contributions across future ranges or repeatedly queries contiguous predecessor ranges."
+    ]
+  },
+  {
+    "skill_id": "O016",
+    "type": "operator",
+    "language": "python",
+    "name": "Exploit Monotone Boundaries and Bounded Value Domains",
+    "description": "Replace repeated per-element searches, redundant scans, and comparison-heavy enumeration with aggregate structures matched to the input domain. Use frequency arrays, prefix counts, sieve marking, or convolution when values are bounded; use two pointers when sorted validity boundaries move monotonically; use binary search on a monotone feasibility predicate for rank or threshold objectives; and use prefix-order",
+    "family": "coprimality",
+    "tags": [
+      "algorithmic-optimization",
+      "bounded-value-domain",
+      "frequency-counting",
+      "prefix-sums",
+      "binary-search-on-answer",
+      "two-pointers",
+      "fenwick-tree",
+      "sieve",
+      "convolution",
+      "order-statistics"
+    ],
+    "triggers": [
+      "A binary search or bisect call appears inside a quadratic or repeated outer loop.",
+      "The searched boundary moves monotonically as an index advances.",
+      "A predicate has the form 'is threshold x feasible?' and feasibility is monotone.",
+      "Values lie in a small or moderately bounded integer domain.",
+      "The algorithm repeatedly scans all distinct values or the entire numeric interval.",
+      "The result depends on multiplicities, divisibility, or aggregate value combinations rather than input order.",
+      "A threshold transform naturally maps values to +1 and -1, followed by subarray or prefix-sum counting.",
+      "Many pair or triple combinations are needed, but only counts, ranks, or aggregate sums are required."
+    ]
+  },
+  {
+    "skill_id": "O017",
+    "type": "operator",
+    "language": "python",
+    "name": "Direct Path Micro Optimization and Semantic Cleanup",
+    "description": "Reusable optimization pattern distilled from weighted traces.",
+    "family": "constant_factor",
+    "tags": [
+      "constant-factor-optimization",
+      "micro-optimization",
+      "input-safety",
+      "direct-parsing",
+      "buffered-io",
+      "branch-normalization",
+      "arithmetic-normalization",
+      "ceil-division",
+      "min-max-reduction",
+      "allocation-elimination"
+    ],
+    "triggers": [
+      "eval() or generated source strings are used to parse ordinary numeric input.",
+      "Repeated input() calls dominate a tiny computation.",
+      "list(map( )) or starred unpacking creates containers only for immediate scalar use.",
+      "List concatenation or sentinel insertion is used solely to call min() or max().",
+      "Nested ternaries, boolean arithmetic, dictionary lookup, string multiplication, or helper-heavy dispatch encode a simple branch.",
+      "int(x / d) or floating-point half comparisons are used for integer arithmetic.",
+      "Negative floor-division obscures ceiling division.",
+      "A loop rechecks, reparses, or corrects values that can be computed directly."
+    ]
+  },
+  {
+    "skill_id": "O018",
+    "type": "operator",
+    "language": "python",
+    "name": "Bounded State Space Enumeration and Incremental State Tracking",
+    "description": "Optimize small-constraint exhaustive searches and deterministic simulations by representing only valid states, bounding the search by input-derived limits, and maintaining incremental state instead of repeatedly rebuilding or rescanning history. Generate monotone or fixed-branching candidates directly with DFS/backtracking or specialized loops, score or count each candidate immediately, prune impossible prefixes",
+    "family": "graph",
+    "tags": [
+      "bounded-bruteforce",
+      "dfs",
+      "backtracking",
+      "combinations-with-repetition",
+      "state-space-pruning",
+      "streaming-enumeration",
+      "incremental-counting",
+      "cycle-detection",
+      "visited-set",
+      "bitmask-state"
+    ],
+    "triggers": [
+      "The input size or maximum digit length is explicitly small.",
+      "Valid candidates satisfy monotonicity, fixed-length, digit-alphabet, or other structural constraints.",
+      "A generic product, queue, frontier, or recursive generator explores invalid or redundant states.",
+      "Partial sequences are copied with slicing or concatenation at every branch.",
+      "Branch-local mutable lists are aliased or mutated without explicit undo.",
+      "The implementation materializes all candidates, scores, or successful outputs although only a count, maximum, or decision is needed.",
+      "Candidates are repeatedly converted between tuples, strings, and integers.",
+      "A numeric upper bound can cap candidate depth or prune a prefix immediately."
+    ]
+  },
+  {
+    "skill_id": "O019",
+    "type": "operator",
+    "language": "python",
+    "name": "Exploit Bounded Domains and Local Group Structure",
+    "description": "Replace general-purpose sorting, hashing, repeated linear lookup, and materialized intermediate records with the smallest structure matching the data domain and dependency pattern. Use dense arrays for bounded integer keys, aggregate updates during ingestion, scan buckets in natural order for prefix or threshold queries, classify uniform ranges arithmetically, and process independent groups separately when ordering",
+    "family": "streaming",
+    "tags": [
+      "counting",
+      "bucketization",
+      "direct-addressing",
+      "frequency-aggregation",
+      "prefix-sum",
+      "threshold-search",
+      "group-by",
+      "local-sorting",
+      "binary-search",
+      "state-compression"
+    ],
+    "triggers": [
+      "Keys are non-negative integers with a known, modest maximum.",
+      "A dictionary is used only for numeric frequency or additive aggregation.",
+      "A global comparison sort is used only to traverse bounded keys in order.",
+      "Duplicate keys can be merged without changing the result.",
+      "The task asks for the first key where a cumulative total crosses a threshold.",
+      "Values fall into uniform contiguous ranges that can be classified by arithmetic.",
+      "A loop repeatedly performs list membership checks followed by list.index calls.",
+      "Ordering is required within independent groups but not across groups."
+    ]
+  },
+  {
+    "skill_id": "O020",
+    "type": "operator",
+    "language": "python",
+    "name": "Bounded Domain Frequency State Compression",
+    "description": "Replace repeated scans, sorting, general-purpose frequency structures, and unnecessary input or output materialization with a compact frequency state. Use direct-address arrays when values belong to a small known range; otherwise use a sparse map. Maintain only the aggregate invariant required by the output, such as a running sum, pair total, distinct count, parity, or cached per-value result. Process streams",
+    "family": "streaming",
+    "tags": [
+      "frequency-counting",
+      "bounded-domain",
+      "direct-address-array",
+      "running-aggregate",
+      "value-replacement",
+      "query-processing",
+      "state-compression",
+      "streaming",
+      "precomputation",
+      "I/O-optimization"
+    ],
+    "triggers": [
+      "Values are small, nonnegative, and bounded by a known compact range.",
+      "Queries replace or transfer all occurrences of one value to another.",
+      "Only counts per value matter; element positions or slot identities do not.",
+      "A query repeatedly scans dictionary keys, a small collection, or a list to find a frequency.",
+      "The output depends on a global aggregate plus the frequency of the current value.",
+      "A combinatorial helper is called with a fixed small parameter such as pair counting.",
+      "Input can be consumed once without retaining the original sequence.",
+      "Output is determined by a fixed ordered alphabet or numeric domain."
+    ]
+  },
+  {
+    "skill_id": "O021",
+    "type": "operator",
+    "language": "python",
+    "name": "Invariant Driven Square Root Candidate Enumeration",
+    "description": "Replace indirect factorization, subset reconstruction, interval enumeration, or broad base searches with a proof-based candidate generator. Derive the relevant arithmetic invariant, enumerate only divisor or factor-pair candidates up to the square root, and validate or score candidates online. Use direct integer arithmetic, exploit pair symmetry, and avoid materializing, sorting, or recomputing structures that the",
+    "family": "digit",
+    "tags": [
+      "number-theory",
+      "divisors",
+      "factor-pairs",
+      "sqrt-enumeration",
+      "math",
+      "candidate-generation",
+      "digit-sum",
+      "counting",
+      "optimization",
+      "constant-space"
+    ],
+    "triggers": [
+      "The objective depends on factor pairs or divisors of one integer.",
+      "A solution factorizes a number and then enumerates prime-factor subsets or reconstructs products.",
+      "A fixed divisor-search bound may be smaller than floor(sqrt(N)).",
+      "All relevant divisor pairs can be represented by checking d from 1 through floor(sqrt(N)).",
+      "The code materializes and sorts all divisors even though only the minimum, maximum, or first feasible candidate is needed.",
+      "A broad interval or base search can be rewritten using an arithmetic-series, divisibility, parity, or digit-sum identity.",
+      "A loop repeatedly builds divisor lists or scans overlapping ranges for the same divisibility property.",
+      "A candidate score is symmetric or monotone over a pair (d, N // d), especially when minimizing the larger factor or digit length."
+    ]
+  },
+  {
+    "skill_id": "O022",
+    "type": "operator",
+    "language": "python",
+    "name": "Bounded Arithmetic and Native Primitive Optimization",
+    "description": "Optimize Python numeric hot paths by replacing handwritten implementations with optimized built-ins, keeping modular values bounded, eliminating redundant recomputation, and reformulating exact large-number arithmetic as factorized modular arithmetic. Typical applications include factorials, modular exponentiation, weighted sums, small-state dynamic programs, and expressions involving a global LCM under a prime",
+    "family": "combinatorics",
+    "tags": [
+      "python-optimization",
+      "native-builtins",
+      "modular-arithmetic",
+      "bounded-integers",
+      "big-integer-avoidance",
+      "factorial",
+      "modular-exponentiation",
+      "prime-factorization",
+      "lcm",
+      "modular-inverse"
+    ],
+    "triggers": [
+      "A Python loop manually implements an operation already provided by a native standard-library primitive.",
+      "A custom binary exponentiation routine or string-based bit scan computes a^b modulo M.",
+      "The same exponent or other invariant quantity is recomputed inside a loop.",
+      "A result is needed modulo M, but accumulators or products are reduced only at the end.",
+      "Exact LCM, quotient, factorial, or power values grow far beyond the required modular result.",
+      "A formula is expressed with repeated indexed terms that can be split into reusable weighted sums.",
+      "A fixed-size DP repeatedly calls modular exponentiation or performs avoidable per-update work.",
+      "Input uses eval or unbuffered parsing for plain numeric data."
+    ]
+  },
+  {
+    "skill_id": "O023",
+    "type": "operator",
+    "language": "python",
+    "name": "Exploit GCD/LCM Structure and Stream Aggregations",
+    "description": "Optimize arithmetic and number-theoretic code by replacing brute-force divisor or multiple scans with Euclid-based gcd, exact integer lcm, prefix/suffix gcd aggregation, divisibility counting, or algebraic simplification. Avoid sorting when only extrema and global gcd are needed, eliminate dead computation, and stream reductions instead of materializing large intermediate lists, tensors, or pairwise results",
+    "family": "coprimality",
+    "tags": [
+      "gcd",
+      "lcm",
+      "number-theory",
+      "divisibility",
+      "modular-arithmetic",
+      "multiplicative-order",
+      "prefix-suffix",
+      "inclusion-exclusion",
+      "divisor-counting",
+      "streaming-aggregation"
+    ],
+    "triggers": [
+      "A loop scans candidate divisors from a numeric bound down to 1.",
+      "A gcd is implemented by exhaustive divisor testing instead of Euclid's algorithm.",
+      "An lcm is computed using floating-point division or an unsafe product-first expression.",
+      "A large list, pair table, or multidimensional array is created only to compute a final aggregate.",
+      "A comprehension consumes another quadratic or cubic comprehension.",
+      "A sorted array is used only for its minimum, maximum, or endpoint values.",
+      "A value must satisfy a gcd or divisibility condition after excluding one position.",
+      "A result depends on gcd values over all triples or another Cartesian product."
+    ]
+  },
+  {
+    "skill_id": "O024",
+    "type": "operator",
+    "language": "python",
+    "name": "Compress Local Dynamic Programs into Rolling and Weighted Transitions",
+    "description": "A reusable optimization pattern for dynamic programs whose states have local dependencies, small fixed dimensions, repeated transitions, sparse obstacles, or homogeneous runs. Replace full-history tables, dense transition matrices, repeated pattern enumeration, and pointwise scans with rolling state, sparse storage, precomputed local transition weights, closed-form combinatorial counts, or independent segment",
+    "family": "dp",
+    "tags": [
+      "dynamic_programming",
+      "state_compression",
+      "rolling_array",
+      "transition_precomputation",
+      "sparse_transitions",
+      "local_dp",
+      "combinatorics",
+      "segment_decomposition",
+      "run_length_encoding",
+      "bitmask_optimization"
+    ],
+    "triggers": [
+      "Each layer depends only on the immediately previous layer and possibly the current prefix or neighboring state.",
+      "A DP table retains rows, columns, or dimensions that are never accessed again.",
+      "The state dimension is tiny and fixed, such as a bounded count, pattern-prefix length, or residue class.",
+      "A transition repeatedly sums over the same neighboring states or applies a mostly zero dense matrix.",
+      "Transitions move only locally, such as stay, left, and right.",
+      "The same transition structure is reused for every row, time step, or input position.",
+      "Valid configurations are bitmasks with a local constraint such as no adjacent selections.",
+      "A helper repeatedly enumerates the same combinatorial objects or recomputes identical counts."
+    ]
+  },
+  {
+    "skill_id": "O025",
+    "type": "operator",
+    "language": "python",
+    "name": "Constraint Aware Integer and Bitwise Reformulation",
+    "description": "Replace representation-heavy, input-scaled, or redundant searches with direct integer arithmetic, bitwise contribution counting, mathematically justified bounds, incremental accumulation, and early termination. First identify the underlying invariant or monotone structure, then eliminate binary-string conversion, repeated scans, duplicated exponentiation, unnecessary state materialization, and avoidable I/O. Choose",
+    "family": "combinatorics",
+    "tags": [
+      "integer-arithmetic",
+      "bitwise",
+      "bit-length",
+      "perfect-powers",
+      "bounded-enumeration",
+      "early-termination",
+      "prefix-counting",
+      "combinatorial-counting",
+      "incremental-accumulation",
+      "I/O-optimization"
+    ],
+    "triggers": [
+      "Binary strings are created only to obtain bit length, inspect bits, reverse bits, or find the least significant set bit.",
+      "A loop repeatedly divides by two and later converts the iteration count into a power-of-two or all-ones result.",
+      "A geometric sum such as 2^k - 1 is computed indirectly from a separately measured depth.",
+      "A nested search enumerates bases and exponents even though powers grow monotonically and exceed the bound quickly.",
+      "The minimum exponent is two, so any valid base must satisfy base^2 <= limit.",
+      "A maximum-under-bound query builds, deduplicates, sorts, and searches a complete candidate list despite requiring only one extremum.",
+      "The same exponentiation or aggregate count is evaluated repeatedly in a loop condition and update expression.",
+      "A pairwise XOR-like aggregate decomposes independently by bit position."
+    ]
+  },
+  {
+    "skill_id": "O026",
+    "type": "operator",
+    "language": "python",
+    "name": "Algebraic and State Based Collapse of Repetitive Counting",
+    "description": "Replace brute-force scans, repeated aggregation, independent combinatorial construction, or small-state simulations with mathematical structure. Identify arithmetic progressions, low-degree polynomial summands, divisibility classes, overlapping sets, constrained compositions, or invariant-based objectives; then use closed forms, inclusion-exclusion, divisor tests, prefix sums, rolling updates, or direct dynamic",
+    "family": "combinatorics",
+    "tags": [
+      "math",
+      "algebraic-reformulation",
+      "closed-form",
+      "arithmetic-series",
+      "inclusion-exclusion",
+      "combinatorics",
+      "dynamic-programming",
+      "prefix-sum",
+      "number-theory",
+      "mod-arithmetic"
+    ],
+    "triggers": [
+      "A loop scans a contiguous numeric range and only accumulates a polynomial or arithmetic expression.",
+      "A full sum or score is recomputed after changing one element or deleting one candidate.",
+      "Values being summed form an arithmetic progression or regularly spaced multiples.",
+      "Per-element predicates are divisibility or modular-membership tests with fixed moduli.",
+      "Filtered sets overlap in a way that can be described by intersections or least common multiples.",
+      "A helper independently constructs many binomial coefficients or performs repeated factor cancellation.",
+      "A recurrence has fixed offsets, simple base cases, or transitions summing over a range of prior states.",
+      "A transition allows any value from a lower bound onward, suggesting prefix-sum acceleration."
+    ]
+  },
+  {
+    "skill_id": "O027",
+    "type": "operator",
+    "language": "python",
+    "name": "Collapse Geometric Enumeration into Integer, Streaming, or Native Aggregation",
+    "description": "Optimize geometry and pairwise numeric workloads by identifying separability, projection identities, invariant state, and static predicates before applying implementation-level acceleration. Replace 2D or pairwise contribution enumeration with 1D closed-form sums or transformed extrema when the metric permits; replace floating-point integrality checks with exact squared-integer predicates; replace repeated linear",
+    "family": "streaming",
+    "tags": [
+      "computational-geometry",
+      "manhattan-distance",
+      "euclidean-distance",
+      "pair-counting",
+      "nearest-neighbor",
+      "coordinate-transform",
+      "separability",
+      "streaming-extrema",
+      "perfect-square-check",
+      "hash-set-membership"
+    ],
+    "triggers": [
+      "A symmetric grid or pairwise sum is computed by enumerating cells, rows, columns, or pairs even though the contribution separates by coordinate.",
+      "A 2D Manhattan-distance extremum involves expressions such as x+y or x-y, or sorts points only to inspect extreme candidates.",
+      "The output depends only on max(value)-min(value) for derived values stored in lists.",
+      "A Euclidean distance is computed with sqrt or exponentiation only to determine whether it is integral.",
+      "A hot loop scans all candidate integers, uses any( ), or repeatedly tests membership in a list.",
+      "A fixed anchor determines candidate translations or transformations, followed by repeated exact point-existence checks.",
+      "A full pairwise distance matrix is filled one scalar at a time in Python and then reduced with argmin or a similar operation.",
+      "The computation is a regular dense numeric kernel with independent pair evaluations and vectorized native libraries are available."
+    ]
+  },
+  {
+    "skill_id": "O028",
+    "type": "operator",
+    "language": "python",
+    "name": "Compress Graph Connectivity and Greedy Aggregation",
+    "description": "Replace object-heavy graph construction, repeated component relabeling, flood-fill, or expanded MST modeling with the smallest structure that preserves the required aggregate: DSU for streaming connectivity and component sizes, iterative coloring for bipartiteness, low-link DFS for edge-criticality, edge-list Kruskal for weighted spanning trees, and dimension-count formulas for regular repeated structures. Process",
+    "family": "graph",
+    "tags": [
+      "graph",
+      "connectivity",
+      "disjoint-set-union",
+      "union-find",
+      "connected-components",
+      "bipartite-check",
+      "bridge-detection",
+      "minimum-spanning-tree",
+      "kruskal",
+      "grid"
+    ],
+    "triggers": [
+      "Only component membership, component count, or component size is needed after reading an undirected edge stream.",
+      "A merge operation rewrites an entire O(V) component-label array.",
+      "An adjacency list is built even though edges can be consumed once by DSU.",
+      "Connectivity is tested after removing every edge.",
+      "A graph is colored and then rescanned to detect conflicts.",
+      "Traversal starts from one vertex although disconnected input may be possible.",
+      "Recursive flood-fill risks recursion-depth failure.",
+      "A grid has local fixed-size adjacency and only active cells matter."
+    ]
+  },
+  {
+    "skill_id": "O029",
+    "type": "operator",
+    "language": "python",
+    "name": "Optimized Union Find for Large Connectivity Workloads",
+    "description": "Upgrade or repair an existing disjoint-set union implementation without changing the connectivity algorithm. Use path compression and union by size or rank, link only roots, expose a consistent minimal API, and avoid full component reconstruction during query processing. For reverse offline queries, preserve reverse insertion, component-size invariants, and reversed output. Reduce Python overhead with buffered",
+    "family": "graph",
+    "tags": [
+      "disjoint-set-union",
+      "union-find",
+      "dynamic-connectivity",
+      "connected-components",
+      "offline-reverse-processing",
+      "path-compression",
+      "union-by-size",
+      "union-by-rank",
+      "buffered-io",
+      "amortized-optimization"
+    ],
+    "triggers": [
+      "A parent array represents roots by negative sizes or separate rank/size metadata.",
+      "Repeated merge and same-component queries dominate runtime.",
+      "The implementation follows parent links without path compression.",
+      "Unions attach roots arbitrarily, by index, or directly modify non-root nodes.",
+      "The code already uses reverse processing for deletions or maintains a running pair-count invariant.",
+      "Component answers depend only on component sizes or the number of connected components.",
+      "The DSU class has mismatched, missing, truncated, or obfuscated method names.",
+      "Helpers enumerate members, roots, or groups during query processing."
+    ]
+  },
+  {
+    "skill_id": "O030",
+    "type": "operator",
+    "language": "python",
+    "name": "Replace Materialized Brute Force with Structural Streaming Checks",
+    "description": "Optimize string-heavy decision and construction code by exposing the underlying structural predicate, reducing candidates to only feasible cases, and validating through direct indexed scans, prefix/suffix checks, or incremental state. Avoid constructing strings, slices, repeated-count scans, parsed big integers, or symmetric candidate outputs when the result can be decided from lengths, ordering, local characters",
+    "family": "graph",
+    "tags": [
+      "strings",
+      "prefix-suffix-matching",
+      "lexicographic-comparison",
+      "early-exit",
+      "allocation-reduction",
+      "brute-force-reduction",
+      "streaming-validation",
+      "hash-set",
+      "big-integer-comparison",
+      "implementation"
+    ],
+    "triggers": [
+      "A loop repeatedly constructs slices, concatenations, transformed strings, or stepped substrings only to compare them.",
+      "A predicate naturally decomposes into prefix agreement, suffix agreement, local adjacency, or indexed character equality.",
+      "A fixed or short target is checked through nested enumeration of impossible split or deletion combinations.",
+      "A loop contains list.count, membership tests on a list, or another full-container scan for every element.",
+      "The code builds two symmetric candidate strings and applies min or max even though their ordering follows from simpler input properties.",
+      "Sorted data is joined into strings solely for lexicographic comparison.",
+      "Large decimal strings are converted to integers or subtracted only to determine ordering.",
+      "A bulk transformation such as replace, filter, split, or join is used when only the first qualifying character or position matters."
+    ]
+  },
+  {
+    "skill_id": "O031",
+    "type": "operator",
+    "language": "python",
+    "name": "Bounded Domain Sieve and Prefix Lookup",
+    "description": "Reusable optimization pattern distilled from weighted traces.",
+    "family": "coprimality",
+    "tags": [
+      "precomputation",
+      "sieve",
+      "number-theory",
+      "multiple-queries",
+      "prefix-sum",
+      "range-query",
+      "dense-lookup",
+      "predecessor-query",
+      "offline-processing",
+      "Python-performance"
+    ],
+    "triggers": [
+      "Many queries reuse the same bounded numeric universe.",
+      "The queried predicate depends only on each value, not on query-specific state.",
+      "Queries repeatedly scan overlapping intervals or retest the same values.",
+      "A primality or divisibility helper is called inside a loop over many consecutive values.",
+      "Each query asks for a cumulative aggregate such as a prefix count or prefix sum.",
+      "Each query asks for the greatest valid value or event at or below a threshold.",
+      "The implementation stores sparse qualifying values only to binary-search or linearly scan them later.",
+      "The domain maximum is small or moderate enough to allocate arrays indexed by value."
+    ]
+  },
+  {
+    "skill_id": "O032",
+    "type": "operator",
+    "language": "python",
+    "name": "Reduce, Factor, and Aggregate Prime Structure Directly",
+    "description": "Replace indirect divisor enumeration, repeated trial factorization, redundant factorization of related inputs, and dense factor state with direct arithmetic structure. First reduce shared-factor problems using gcd. Factor only the necessary value, preferably with SPF or a reusable prime table for bounded multi-query inputs, and count exponents or distinct primes while dividing the residual in place. Aggregate the",
+    "family": "coprimality",
+    "tags": [
+      "number-theory",
+      "prime-factorization",
+      "gcd-reduction",
+      "smallest-prime-factor",
+      "sparse-aggregation",
+      "greedy-counting",
+      "multiplicative-functions",
+      "single-query",
+      "multi-query",
+      "constant-factor-optimization"
+    ],
+    "triggers": [
+      "The output depends on common divisibility or shared prime structure of two integers.",
+      "The code factors multiple related values even though only common factors matter.",
+      "A loop scans every integer up to sqrt(n), including composite candidates.",
+      "A list of repeated prime factors is later deduplicated or folded in a second pass.",
+      "A dense array indexed by numeric value stores sparse prime-exponent state.",
+      "Many bounded input values are factorized independently with trial division.",
+      "The result depends only on prime exponents, distinct prime factors, divisor count, divisor sum, or an LCM exponent maximum.",
+      "An exponent loop repeatedly consumes 1, 2, 3, or checks triangular-number thresholds."
+    ]
+  },
+  {
+    "skill_id": "O033",
+    "type": "operator",
+    "language": "python",
+    "name": "Replace Digit Range Enumeration with Structural Counting and Arithmetic Reduction",
+    "description": "When a computation ranges over many integers but depends only on decimal digits, digit sums, endpoints, carries, or a small set of digit-presence states, replace per-value simulation with a mathematical invariant, grouped frequency count, digit DP, recurrence, or divisor-derived candidate search. Preserve exact boundary behavior, special cases, modular bounds, and input/output semantics while removing unnecessary",
+    "family": "combinatorics",
+    "tags": [
+      "math",
+      "digit-structure",
+      "digit-sum",
+      "combinatorics",
+      "digit-dp",
+      "aggregation",
+      "closed-form",
+      "carry-analysis",
+      "number-theory",
+      "modular-arithmetic"
+    ],
+    "triggers": [
+      "A loop enumerates every split a and n-a.",
+      "A loop visits every integer up to a large bound while extracting only a few digits.",
+      "The objective depends only on digit sums, carries, divisibility by a digit property, or decimal endpoints.",
+      "Only a fixed number of digit categories or Boolean presence states are relevant.",
+      "The code computes huge powers and applies a modulus only at the end.",
+      "A base-search problem uses repeated digit sums in a variable base.",
+      "A factorization or generic search appears where quotient/remainder identities can characterize candidates.",
+      "Repeated string conversion, list construction, or per-item parsing dominates a digit-oriented loop."
+    ]
+  },
+  {
+    "skill_id": "O034",
+    "type": "operator",
+    "language": "python",
+    "name": "Exploit Fixed Domains with Aggregation and Global Precomputation",
+    "description": "When repeated queries operate on a small, fixed combinatorial or digit-based domain, replace recursive search, repeated enumeration, and per-item materialization with dense state representations, frequency aggregation, bottom-up dynamic programming, and direct lookup. Identify the minimal information that determines the result, precompute the complete bounded answer space once, and preserve exact counting semantics.",
+    "family": "state_compression",
+    "tags": [
+      "counting",
+      "combinatorics",
+      "dynamic-programming",
+      "subset-dp",
+      "bitmask-dp",
+      "digit-counting",
+      "frequency-table",
+      "bucketing",
+      "multi-query",
+      "precomputation"
+    ],
+    "triggers": [
+      "The same fixed universe is searched independently for many queries.",
+      "Recursive branches remove or add elements, so different orders reach the same subset state.",
+      "The candidate universe is small enough for a bitmask or dense table.",
+      "A recursion-depth, arity, or digit-position parameter is always a tiny fixed constant.",
+      "The target or result lies in a small bounded integer range.",
+      "The output depends only on a small feature of each object, such as endpoint digits or a class pair.",
+      "A helper scans the same full range once for every combination of a few small parameters.",
+      "The final expression is a product or sum over compatible classes, often with a reversed or symmetric key."
+    ]
+  },
+  {
+    "skill_id": "O035",
+    "type": "operator",
+    "language": "python",
+    "name": "Exploit Query Structure with Precomputation and Monotone Range State",
+    "description": "Replace repeated full-array scans, indirect event reconstruction, and mismatched prefix-based structures with a representation aligned to the queried predicate. Decompose periodic work into full cycles plus a remainder, cache reusable parameter-dependent aggregates, preserve labels when queries depend on identity, and use prefix tables, bitsets, direct dense state, or associative range structures as appropriate",
+    "family": "dp",
+    "tags": [
+      "precomputation",
+      "memoization",
+      "prefix-sums",
+      "periodic-decomposition",
+      "range-query",
+      "point-update",
+      "range-update",
+      "segment-tree",
+      "fenwick-tree",
+      "lazy-propagation"
+    ],
+    "triggers": [
+      "A query loop scans the same base array, rebuilds a transformed array, or constructs a prefix array for every query.",
+      "A query expression contains cyclic repetition, division by the base length, or a quotient/remainder decomposition.",
+      "Multiple queries reuse the same parameter, such as a modulus, target value, or category.",
+      "Only one prefix value, aggregate, or partial-cycle result is consumed after a full temporary array is built.",
+      "Queries ask for rectangle, interval, or category counts on a static grid.",
+      "Updates affect suffixes, prefixes, or contiguous ranges whose boundaries only move inward.",
+      "The state is overwritten or minimized rather than additively accumulated.",
+      "The query predicate depends on stored labels or values across multiple layers, not merely binary occupancy."
+    ]
+  },
+  {
+    "skill_id": "O036",
+    "type": "operator",
+    "language": "python",
+    "name": "Exploit Overlap, Monotonicity, and Bounded State",
+    "description": "Refactor repeated-array and grid computations by identifying overlapping work, preserving only the state needed for the next step, and exploiting structural bounds. Replace repeated range rescans or prefix materialization with rolling updates; use monotonic deques for sliding extrema; use one-pass dynamic programming for contiguous optima; prune sorted candidate windows around a meaningful boundary; linearize",
+    "family": "graph",
+    "tags": [
+      "sliding-window",
+      "rolling-sum",
+      "monotonic-deque",
+      "dynamic-programming",
+      "Kadane",
+      "prefix-sum",
+      "circular-array",
+      "sorted-array",
+      "candidate-pruning",
+      "difference-array"
+    ],
+    "triggers": [
+      "Adjacent fixed-size windows overlap almost entirely.",
+      "A solution repeatedly rescans or sums nearly identical ranges.",
+      "A queue or deque is used only to remove the oldest window element.",
+      "Window queries require only a minimum, maximum, or extremum index.",
+      "Nested loops repeatedly apply min or max updates over shifted or circular ranges.",
+      "All contiguous subarray sums or DP layers are materialized although only one optimum is required.",
+      "The input is sorted and the objective depends mainly on interval endpoints or a distinguished boundary.",
+      "Circular adjacency or wraparound behavior appears naturally."
+    ]
+  },
+  {
+    "skill_id": "O037",
+    "type": "operator",
+    "language": "python",
+    "name": "Algebraic Elimination and Bounded Range Counting",
+    "description": "Replace brute-force enumeration of bounded integer variables with algebraic feasibility checks, residual-variable elimination, interval counting, or closed-form aggregation. When one variable is uniquely determined by a linear constraint, solve for it and validate its bounds and divisibility. When many assignments share the same sum, count them by feasible intervals or the triangular distribution of bounded pair",
+    "family": "combinatorics",
+    "tags": [
+      "math",
+      "combinatorics",
+      "bounded-integer-solutions",
+      "linear-constraints",
+      "diophantine-feasibility",
+      "loop-elimination",
+      "range-counting",
+      "brute-force-optimization",
+      "constant-space"
+    ],
+    "triggers": [
+      "A fixed-sum or linear equation constrains several bounded integer variables.",
+      "A nested loop enumerates a variable that is uniquely determined by the other variables.",
+      "The innermost loop only checks whether a residual value is nonnegative, integral, or within a bound.",
+      "A predicate has the form 0 <= target - a - b <= limit.",
+      "Validity depends only on a pair sum or another aggregate rather than individual values.",
+      "A brute-force feasibility search solves a small system of linear equations.",
+      "Bounds are simple intervals or boxes, enabling algebraic pruning.",
+      "The required output is a count or existence decision, not the actual assignments."
+    ]
+  },
+  {
+    "skill_id": "O038",
+    "type": "operator",
+    "language": "python",
+    "name": "Frontier Driven Greedy Priority Queues",
+    "description": "Replace repeated global simulation, rescanning, sorting, or layered-container maintenance with a data structure that exposes only the next actionable state. Use a max-heap when repeatedly selecting the best currently eligible value, chronological buckets when eligibility is keyed by a bounded dense index, and frontier or queue propagation when local state changes enable new dependencies. Preserve the greedy",
+    "family": "graph",
+    "tags": [
+      "greedy",
+      "priority-queue",
+      "max-heap",
+      "scheduling",
+      "event-driven-processing",
+      "frontier-processing",
+      "dependency-graph",
+      "topological-order",
+      "bucket-array",
+      "incremental-state"
+    ],
+    "triggers": [
+      "Each step selects the best currently eligible item.",
+      "Items become eligible over time or after local dependency changes.",
+      "A loop repeatedly scans all candidates to find a maximum or discover newly enabled actions.",
+      "The implementation uses sorting, layered lists, pop(0), dictionary keys over a dense integer range, or a heap wrapper.",
+      "A min-heap is used with negated values to emulate a max-heap.",
+      "Only one or a few local states change after each action.",
+      "A valid action requires mutually agreeing front elements or predecessor completion.",
+      "A global day or round loop mostly detects idle periods."
+    ]
+  },
+  {
+    "skill_id": "O039",
+    "type": "operator",
+    "language": "python",
+    "name": "Canonicalize Additive Optimization with Unbounded DP and Structural Reduction",
+    "description": "Recognize minimum-cost or counting problems over additive integer totals, especially when moves or item values can be reused. Replace recursive branching, repeated subtraction, explicit multiple-count enumeration, and opaque representation tricks with a direct recurrence over reachable sums. Generate usable denominations once, use one-dimensional unbounded-knapsack DP when the target is moderate, compress",
+    "family": "dp",
+    "tags": [
+      "dynamic_programming",
+      "unbounded_knapsack",
+      "coin_change",
+      "minimum_cost",
+      "counting_combinations",
+      "shortest_path_on_sums",
+      "state_compression",
+      "dimension_reduction",
+      "precomputation",
+      "greedy_invariant"
+    ],
+    "triggers": [
+      "A recursive minimization branches over alternative additive moves and revisits the same remaining totals.",
+      "A loop repeatedly subtracts one item at a time while minimizing or counting the result.",
+      "Allowed values form a reusable denomination set, including generated values such as powers or squares.",
+      "The objective is minimum number of uniform-cost additions or the number of unordered combinations.",
+      "A two-dimensional DP row depends only on the previous row and repeated use of the current item.",
+      "An inner loop enumerates all multiples of one denomination.",
+      "A nested enumeration checks whether several fixed denominations sum to a target.",
+      "One variable is uniquely determined by the remaining target after other choices are fixed."
+    ]
+  },
+  {
+    "skill_id": "O040",
+    "type": "operator",
+    "language": "python",
+    "name": "Collapse Repeated Aggregation with Monotone Prefix Sum Scans",
+    "description": "Recognize when repeated slice sums, pair enumeration, small-state dynamic programs, or boundary rebalancing can be rewritten as prefix/suffix aggregates and monotone scans. Precompute or maintain cumulative totals, exploit nonnegative-value monotonicity for binary search and early termination, and replace local rolling logic with explicit reusable states when this improves correctness. Preserve streaming O(1) space",
+    "family": "streaming",
+    "tags": [
+      "prefix-sums",
+      "suffix-sums",
+      "rolling-aggregates",
+      "dynamic-programming",
+      "greedy",
+      "binary-search",
+      "two-pointers",
+      "monotonicity",
+      "pairwise-sums",
+      "pairwise-differences"
+    ],
+    "triggers": [
+      "A loop repeatedly calls sum() on prefixes, suffixes, or slices.",
+      "Candidate answers are formed by choosing a single cut, turn position, or boundary.",
+      "A small-state DP recurrence repeatedly aggregates the same left or right ranges.",
+      "A pairwise expression can be grouped by each element's contribution against a running prefix or suffix.",
+      "Values are nonnegative or positive, so cumulative sums are monotone.",
+      "A feasibility query asks for the largest prefix under a remaining budget.",
+      "The valid candidates form a suffix or prefix, and failures cannot be repaired by later scanning.",
+      "A moving split or balancing pointer advances monotonically."
+    ]
+  },
+  {
+    "skill_id": "O041",
+    "type": "operator",
+    "language": "python",
+    "name": "Exact Integer Square Predicate and Root Boundary Simplification",
+    "description": "Replace floating-point, string-based, or fixed-range enumeration logic for perfect-square decisions and largest-square-below-bound queries with exact integer arithmetic. Preserve decimal concatenation semantics by constructing the target once, use math.isqrt when available, and reduce extremal square queries to isqrt(n) * isqrt(n). For bounded domains without integer square root support, search only roots",
+    "family": "digit",
+    "tags": [
+      "math",
+      "perfect-square",
+      "integer-square-root",
+      "exact-arithmetic",
+      "search-to-formula",
+      "bounded-search",
+      "string-concatenation",
+      "single-query",
+      "numerical-robustness",
+      "constant-space"
+    ],
+    "triggers": [
+      "Code uses x ** 0.5, math.sqrt, is_integer(), modulo-one checks, or float-to-string inspection to test squarehood.",
+      "A loop compares one fixed target against values generated as i*i.",
+      "A list of squares is built solely for one membership test.",
+      "A downward scan searches for the largest perfect square not exceeding n.",
+      "The target is formed by concatenating numeric tokens as decimal strings rather than adding them.",
+      "The result is a single boolean square-membership decision or one extremal square value.",
+      "Search bounds are hardcoded even though the relevant root range can be derived from the target.",
+      "A small bounded domain tempts manual enumeration of squares or special higher powers."
+    ]
+  },
+  {
+    "skill_id": "O042",
+    "type": "operator",
+    "language": "python",
+    "name": "Invariant Driven Greedy Compression",
+    "description": "Replace value-dependent simulation, repeated mutation, dynamic programming, or edge-by-edge greedy actions with a direct scan based on the smallest sufficient invariant. Look for contributions that decompose into positive adjacent rises, local extrema, consecutive relevant positions, or a scalar carried state. The resulting algorithm should count boundary events or process only structurally meaningful transitions",
+    "family": "graph",
+    "tags": [
+      "greedy",
+      "simulation-to-formula",
+      "difference-scan",
+      "adjacent-differences",
+      "local-extrema",
+      "state-compression",
+      "run-length-counting",
+      "fixed-points",
+      "single-pass",
+      "constant-space"
+    ],
+    "triggers": [
+      "A while-loop or nested scan repeats until values reach zero or a target state.",
+      "Runtime depends on numeric magnitudes, heights, rounds, or unit operations rather than only input length.",
+      "The simulation repeatedly decrements contiguous positive ranges or counts segments at successive levels.",
+      "The answer depends primarily on transitions between neighboring values rather than intermediate array contents.",
+      "A new operation begins when the current value exceeds the previous value.",
+      "A process reacts to every profitable adjacent increase even though monotone stretches can be grouped into valley-to-peak segments.",
+      "Only local extrema, fixed points, or consecutive relevant positions affect the result.",
+      "A mutation or swap affects only adjacent positions and the final outcome depends on runs of relevant indices."
+    ]
+  },
+  {
+    "skill_id": "O043",
+    "type": "operator",
+    "language": "python",
+    "name": "Incremental Constraint Propagating Search",
+    "description": "Replace generate-and-test enumeration, repeated global lookups, or restart-heavy grid DFS with a direct state representation, one-time structural preprocessing, and incremental constraint checks. Represent only the information needed to make the next decision, apply fixed requirements before branching, reject invalid partial states immediately, and undo changes on backtracking. For fixed-size boards, use explicit",
+    "family": "combinatorics",
+    "tags": [
+      "backtracking",
+      "constraint-satisfaction",
+      "incremental-validation",
+      "constraint-propagation",
+      "pruning",
+      "state-representation",
+      "grid-search",
+      "board-search",
+      "simulation",
+      "preprocessing"
+    ],
+    "triggers": [
+      "Permutations or full candidate generation are followed by validation only at complete assignments.",
+      "A validator repeatedly scans the whole board or compares every pair at recursion leaves.",
+      "Fixed or required positions are enforced only after a candidate is fully constructed.",
+      "Rows, columns, diagonals, or other exclusion rules can be tracked with occupancy arrays, sets, or bitmasks.",
+      "Recursive grid search starts independently from many cells and repeats exploration across the same component.",
+      "Grid DFS marks and restores cells but uses little structural information for pruning.",
+      "Repeated list.index, reverse lookup, or global token-index arithmetic is used for board queries.",
+      "A small fixed board has explicit rows, columns, diagonals, or winning patterns that can be checked directly."
+    ]
+  },
+  {
+    "skill_id": "O044",
+    "type": "operator",
+    "language": "python",
+    "name": "Constraint Bounded Aggregate Enumeration",
+    "description": "Optimize small integer combination searches by reasoning in terms of aggregate totals rather than generating all component tuples or independent candidate sets. Derive tight coefficient bounds from capacity constraints, enumerate one dependent component in the context of the other, apply feasibility checks immediately, deduplicate only when useful, and update the optimum online. When the capacity is the natural",
+    "family": "streaming",
+    "tags": [
+      "bounded-enumeration",
+      "brute-force-optimization",
+      "state-space-reduction",
+      "reachability-dp",
+      "deduplication",
+      "constraint-pruning",
+      "ratio-maximization",
+      "integer-arithmetic"
+    ],
+    "triggers": [
+      "A solution uses several nested loops over item counts with bounds based on a loose capacity or arbitrary constants.",
+      "Different count tuples produce the same aggregate state, while the objective and constraints depend only on those aggregates.",
+      "Feasibility of one component depends on the value of another component through monotone capacity or ratio constraints.",
+      "Candidate states are materialized, sorted repeatedly, or filtered only after generation.",
+      "The original limits are small enough to derive tight count ceilings from item sizes and total capacity.",
+      "A bounded capacity is suitable for boolean reachability or knapsack-style DP.",
+      "The objective is a fraction or concentration that can be compared exactly with integer products."
+    ]
+  },
+  {
+    "skill_id": "O045",
+    "type": "operator",
+    "language": "python",
+    "name": "Collapse Geometric Expectation to an Exact Formula",
+    "description": "Replace simulation or truncated summation of repeated independent trials with a closed-form expected value. When each attempt has a fixed cost C and an independent success probability p, the number of attempts until the first success follows a geometric distribution with expectation 1/p, so the total expected cost is C/p. Use exact arithmetic whenever p has an exact representation, such as p = 2^-m, yielding C * 2^m.",
+    "family": "state_compression",
+    "tags": [
+      "expected-value",
+      "geometric-distribution",
+      "closed-form",
+      "series-summation",
+      "probability",
+      "exact-arithmetic",
+      "constant-time"
+    ],
+    "triggers": [
+      "A loop sums terms proportional to k * p * (1-p)^(k-1) or (k+1) * p * (1-p)^k.",
+      "A fixed iteration limit approximates an infinite probabilistic series.",
+      "A small epsilon or tail threshold terminates a geometrically decaying sum.",
+      "The code repeatedly computes invariant probability powers inside a loop.",
+      "Floating-point accumulation is followed by rounding to an apparently exact integer.",
+      "The process consists of independent retries with identical success probability and fixed per-attempt cost."
+    ]
+  }
+]
